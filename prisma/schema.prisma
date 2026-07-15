@@ -5,3 +5,110 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum Role {
+  ADMIN
+  FRONT_ADMIN
+
+  @@map("role")
+}
+
+enum DonationType {
+  ZAKAT
+  SHADAQAH
+  SUMBANGAN_LAIN
+
+  @@map("donation_type")
+}
+
+enum PaymentMethod {
+  CASH
+  BANK_TRANSFER
+
+  @@map("payment_method")
+}
+
+model Profile {
+  id        String   @id @default(uuid()) @db.Uuid
+  fullName  String   @map("full_name") @db.VarChar(100)
+  email     String   @unique @db.VarChar(255)
+  role      Role
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  donations Donation[]
+  auditLogs AuditLog[]
+
+  @@map("profiles")
+}
+
+model Donor {
+  id          String    @id @default(uuid()) @db.Uuid
+  fullName    String    @map("full_name") @db.VarChar(150)
+  address     String    @db.Text
+  phoneNumber String    @unique @map("phone_number") @db.VarChar(20)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz
+
+  donations Donation[]
+
+  @@index([phoneNumber])
+  @@index([fullName])
+  @@map("donors")
+}
+
+model Donation {
+  id                    String        @id @default(uuid()) @db.Uuid
+  donationNumber        String        @unique @map("donation_number") @db.VarChar(30)
+  donorId               String        @map("donor_id") @db.Uuid
+  donationType          DonationType  @map("donation_type")
+  paymentMethod         PaymentMethod @map("payment_method")
+  amount                Decimal       @db.Decimal(15, 2)
+  notes                 String?       @db.Text
+  transferProofPath     String?       @map("transfer_proof_path") @db.Text
+  transferProofFilename String?       @map("transfer_proof_filename") @db.VarChar(255)
+  transferUploadedAt    DateTime?     @map("transfer_uploaded_at") @db.Timestamptz
+  donationDate          DateTime      @map("donation_date") @db.Timestamptz
+  receivedBy            String        @map("received_by") @db.Uuid
+  createdAt             DateTime      @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt             DateTime      @updatedAt @map("updated_at") @db.Timestamptz
+
+  donor    Donor   @relation(fields: [donorId], references: [id])
+  receiver Profile @relation(fields: [receivedBy], references: [id])
+
+  @@index([donationNumber])
+  @@index([donationDate])
+  @@index([donorId])
+  @@index([receivedBy])
+  @@index([donationType])
+  @@index([paymentMethod])
+  @@map("donations")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  action    String   @db.VarChar(50)
+  tableName String   @map("table_name") @db.VarChar(50)
+  recordId  String   @map("record_id") @db.Uuid
+  oldValue  Json?    @map("old_value") @db.JsonB
+  newValue  Json?    @map("new_value") @db.JsonB
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  user Profile @relation(fields: [userId], references: [id])
+
+  @@index([createdAt])
+  @@index([userId])
+  @@index([action])
+  @@map("audit_logs")
+}
+
+model Setting {
+  key       String   @id @db.VarChar(100)
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("settings")
+}
