@@ -10,7 +10,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 import { Icons } from "@/lib/icons";
 import { logoutAction } from "@/server/actions/auth/logout";
 import { ROUTES } from "@/constants/routes";
