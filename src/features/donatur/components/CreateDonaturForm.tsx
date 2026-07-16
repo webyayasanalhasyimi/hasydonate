@@ -10,7 +10,12 @@ import { DonaturForm } from "./DonaturForm";
 import { DONATUR_ROUTES } from "../config";
 import { toast } from "sonner";
 
-export function CreateDonaturForm() {
+interface CreateDonaturFormProps {
+  readonly onSuccess?: (donor: { id: string; fullName: string; phoneNumber: string; address: string }) => void;
+  readonly onCancel?: () => void;
+}
+
+export function CreateDonaturForm({ onSuccess, onCancel }: CreateDonaturFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,7 +35,11 @@ export function CreateDonaturForm() {
 
     if (res.success) {
       toast.success("Donatur berhasil dibuat");
-      router.push(DONATUR_ROUTES.DETAIL(res.data.id));
+      if (onSuccess) {
+        onSuccess(res.data);
+      } else {
+        router.push(DONATUR_ROUTES.DETAIL(res.data.id));
+      }
     } else {
       toast.error(res.error.message || "Gagal membuat donatur");
     }
@@ -42,7 +51,7 @@ export function CreateDonaturForm() {
       onSubmit={onSubmit}
       submitText="Simpan Donatur"
       isLoading={isLoading}
-      onCancel={() => router.push(DONATUR_ROUTES.LIST)}
+      onCancel={onCancel || (() => router.push(DONATUR_ROUTES.LIST))}
     />
   );
 }

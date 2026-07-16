@@ -21,6 +21,11 @@ import {
   ChevronRight,
   MoreHorizontal,
   X,
+  FileText,
+  Eye,
+  DollarSign,
+  CreditCard,
+  Check,
 } from "lucide-react";
 
 export const Icons = {
@@ -46,6 +51,11 @@ export const Icons = {
   ChevronRight,
   More: MoreHorizontal,
   Close: X,
+  FileText,
+  Eye,
+  DollarSign,
+  CreditCard,
+  Check,
 } as const;
 
 export type IconType = typeof Icons[keyof typeof Icons];
