@@ -40,8 +40,8 @@ export function DonationDetailView({ donation }: DonationDetailViewProps) {
     }
   }, [donation.transferProofPath]);
 
-  const handlePrintPlaceholder = () => {
-    toast.info("Fitur cetak kwitansi akan diimplementasikan pada fase berikutnya.");
+  const handlePrint = () => {
+    router.push(`/dashboard/receipt/${donation.id}`);
   };
 
   const isPdf = donation.transferProofFilename?.toLowerCase().endsWith(".pdf");
@@ -62,7 +62,7 @@ export function DonationDetailView({ donation }: DonationDetailViewProps) {
             <Icons.ChevronLeft className="h-4 w-4 mr-2" />
             Kembali
           </Button>
-          <Button onClick={handlePrintPlaceholder}>
+          <Button onClick={handlePrint}>
             <Icons.Printer className="h-4 w-4 mr-2" />
             Cetak Kwitansi
           </Button>

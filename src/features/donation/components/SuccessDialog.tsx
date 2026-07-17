@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { formatIDR, formatDate } from "@/lib/utils/index";
 import { Icons } from "@/lib/icons";
 import { DONATION_ROUTES } from "../config";
-import { toast } from "sonner";
 
 export function SuccessDialog() {
   const { isSuccessOpen, setIsSuccessOpen, createdDonation, resetPOS } = useDonationPOS();
@@ -34,8 +33,10 @@ export function SuccessDialog() {
     router.push(DONATION_ROUTES.DETAIL(createdDonation.id));
   };
 
-  const handlePrintPlaceholder = () => {
-    toast.info("Fitur cetak kwitansi akan diimplementasikan pada fase berikutnya.");
+  const handlePrint = () => {
+    setIsSuccessOpen(false);
+    resetPOS();
+    router.push(`/dashboard/receipt/${createdDonation.id}`);
   };
 
   return (
@@ -91,7 +92,7 @@ export function SuccessDialog() {
             <Icons.Eye className="h-4 w-4 mr-2" />
             Detail Donasi
           </Button>
-          <Button variant="secondary" onClick={handlePrintPlaceholder} className="w-full sm:w-auto">
+          <Button variant="secondary" onClick={handlePrint} className="w-full sm:w-auto">
             <Icons.Printer className="h-4 w-4 mr-2" />
             Cetak Kwitansi
           </Button>
