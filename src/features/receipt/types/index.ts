@@ -34,6 +34,7 @@ export interface ReceiptData {
   readonly qrPlaceholderUrl?: string;
   readonly statusLabel?: string;
   readonly watermarkText?: string;
+  readonly logoUrl?: string | undefined;
 }
 
 export interface ReceiptTemplate {

@@ -8,6 +8,7 @@ import { type ReceiptData } from "@/features/receipt/types";
 import { type Result } from "@/types/action";
 import { success, failure } from "../action-result";
 import { PaymentMethod } from "@prisma/client";
+import { getSignedUrl } from "@/lib/storage/signed-url";
 
 export const generateReceiptAction = async (donationId: string): Promise<Result<ReceiptData>> => {
   try {
@@ -24,7 +25,22 @@ export const generateReceiptAction = async (donationId: string): Promise<Result<
     }
 
     const settings = await SettingService.getAll();
-    const receiptData = buildReceiptData(donation, settings);
+
+    // Resolve signed URL for the foundation logo if it exists
+    let logoUrl: string | undefined = undefined;
+    const foundLogoSetting = settings.find((s) => s.key === "foundation.logoPath");
+    if (foundLogoSetting?.value) {
+      try {
+        const parts = foundLogoSetting.value.split("/");
+        const bucket = parts[0] ?? "foundation-assets";
+        const cleanPath = parts.slice(1).join("/");
+        logoUrl = await getSignedUrl(bucket, cleanPath);
+      } catch {
+        // Silent catch for missing or invalid storage path
+      }
+    }
+
+    const receiptData = buildReceiptData(donation, settings, logoUrl);
 
     return success(receiptData);
   } catch (err) {

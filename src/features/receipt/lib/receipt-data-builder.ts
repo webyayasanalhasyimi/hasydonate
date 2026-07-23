@@ -5,7 +5,8 @@ import { spellNumberIndonesian } from "@/lib/utils/currency";
 
 export const buildReceiptData = (
   donation: DonationDetailDto,
-  settings: ReadonlyArray<{ readonly key: string; readonly value: string }>
+  settings: ReadonlyArray<{ readonly key: string; readonly value: string }>,
+  logoUrl?: string
 ): ReceiptData => {
   const getSetting = (key: string): string => {
     const found = settings.find((s) => s.key === key);
@@ -47,6 +48,7 @@ export const buildReceiptData = (
     qrPlaceholderUrl: "/placeholder-qr.png",
     statusLabel: "LUNAS",
     watermarkText: "YAYASAN AL-HASYIMI",
+    logoUrl,
   };
 
   if (donation.notes) {

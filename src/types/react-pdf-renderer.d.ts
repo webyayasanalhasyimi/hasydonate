@@ -5,6 +5,7 @@ declare module "@react-pdf/renderer" {
   export const Page: React.FC<Record<string, unknown>>;
   export const Text: React.FC<Record<string, unknown>>;
   export const View: React.FC<Record<string, unknown>>;
+  export const Image: React.FC<Record<string, unknown>>;
   export const StyleSheet: {
     create: (styles: Record<string, unknown>) => Record<string, unknown>;
   };

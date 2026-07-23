@@ -1,5 +1,5 @@
 import React from "react";
-import { Document, Page, Text, View, StyleSheet } from "../lib/react-pdf-shim";
+import { Document, Page, Text, View, StyleSheet, Image } from "../lib/react-pdf-shim";
 import { type ReceiptData } from "../types";
 import { formatIDR } from "@/lib/utils/currency";
 
@@ -26,6 +26,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "flex-start",
     marginBottom: 10,
+  },
+  headerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  logoImage: {
+    width: 28,
+    height: 28,
+    marginRight: 6,
   },
   headerTitle: {
     fontSize: 13,
@@ -358,9 +367,14 @@ export function A5PdfTemplate({ data }: Readonly<{ data: ReceiptData }>) {
         <View style={styles.contentContainer}>
           {/* Header */}
           <View style={styles.header}>
-            <View>
-              <Text style={styles.headerTitle}>Kwitansi Bukti Donasi</Text>
-              <Text style={styles.headerSubtitle}>Official Receipt</Text>
+            <View style={styles.headerLeft}>
+              {data.logoUrl && (
+                <Image src={data.logoUrl} style={styles.logoImage} />
+              )}
+              <View>
+                <Text style={styles.headerTitle}>Kwitansi Bukti Donasi</Text>
+                <Text style={styles.headerSubtitle}>Official Receipt</Text>
+              </View>
             </View>
             <View style={styles.headerMeta}>
               <Text style={styles.receiptNo}>{data.receiptNumber}</Text>
