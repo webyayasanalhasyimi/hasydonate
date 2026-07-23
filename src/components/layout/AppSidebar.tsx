@@ -78,28 +78,40 @@ export function AppSidebar({ profile }: AppSidebarProps) {
   const inactiveLinkClass =
     "flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 hover:text-zinc-950 dark:hover:text-zinc-100 transition-all duration-150 border-l-4 border-transparent";
 
-  const sidebarContent = (
+  const renderSidebarContent = (onClose?: () => void) => (
     <div className="flex flex-col h-full bg-white dark:bg-zinc-950 border-r border-zinc-150 dark:border-zinc-900 w-64">
       {/* Sidebar Header */}
-      <div className="p-6 border-b border-zinc-100 dark:border-zinc-900 flex items-center gap-3">
-        <div className="relative w-10 h-10 p-1 bg-white rounded-lg shadow-sm border border-zinc-100 dark:bg-zinc-800 dark:border-zinc-800 flex items-center justify-center overflow-hidden">
-          <Image
-            src="/logo.png"
-            alt="Logo"
-            width={32}
-            height={32}
-            priority
-            className="object-contain"
-          />
+      <div className="p-6 border-b border-zinc-100 dark:border-zinc-900 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="relative w-10 h-10 p-1 bg-white rounded-lg shadow-sm border border-zinc-100 dark:bg-zinc-800 dark:border-zinc-800 flex items-center justify-center overflow-hidden">
+            <Image
+              src="/logo.png"
+              alt="Logo"
+              width={32}
+              height={32}
+              priority
+              className="object-contain"
+            />
+          </div>
+          <div>
+            <h2 className="text-base font-bold text-zinc-900 dark:text-white leading-none">
+              Hasy<span className="text-emerald-600 dark:text-emerald-400">Donate</span>
+            </h2>
+            <span className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block mt-0.5">
+              Yayasan Al-Hasyimi
+            </span>
+          </div>
         </div>
-        <div>
-          <h2 className="text-base font-bold text-zinc-900 dark:text-white leading-none">
-            Hasy<span className="text-emerald-600 dark:text-emerald-400">Donate</span>
-          </h2>
-          <span className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block mt-0.5">
-            Yayasan Al-Hasyimi
-          </span>
-        </div>
+
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="p-1.5 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-lg cursor-pointer md:hidden"
+            aria-label="Close sidebar"
+          >
+            <Icons.Close className="w-5 h-5" />
+          </button>
+        )}
       </div>
 
       {/* Nav Links */}
@@ -182,7 +194,7 @@ export function AppSidebar({ profile }: AppSidebarProps) {
 
       {/* Desktop Sidebar (Permanent) */}
       <aside className="hidden md:flex md:flex-col h-screen sticky top-0 shrink-0">
-        {sidebarContent}
+        {renderSidebarContent()}
       </aside>
 
       {/* Mobile Sidebar (Drawer Overlay) */}
@@ -196,16 +208,7 @@ export function AppSidebar({ profile }: AppSidebarProps) {
 
           {/* Drawer Panel */}
           <div className="relative flex flex-col max-w-xs w-full bg-white dark:bg-zinc-950 shadow-2xl transition-transform duration-300 ease-in-out">
-            <div className="absolute top-4 right-4 z-10">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="p-2 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-lg cursor-pointer"
-                aria-label="Close sidebar"
-              >
-                <Icons.Close className="w-5 h-5" />
-              </button>
-            </div>
-            {sidebarContent}
+            {renderSidebarContent(() => setIsOpen(false))}
           </div>
         </div>
       )}
