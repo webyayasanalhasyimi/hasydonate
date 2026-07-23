@@ -10,6 +10,7 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
+    "postinstall": "prisma generate",
     "ci": "pnpm run lint && tsc --noEmit && pnpm run test && pnpm run test:coverage && pnpm run build"
   },
   "dependencies": {
