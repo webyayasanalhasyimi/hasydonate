@@ -9,6 +9,7 @@ import { toast } from "sonner";
 
 export function TransferProofUpload() {
   const {
+    paymentMethod,
     transferProofPath,
     setTransferProofPath,
     transferProofFilename,
@@ -20,6 +21,9 @@ export function TransferProofUpload() {
   const [localPreview, setLocalPreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const isCash = paymentMethod === "CASH";
+  const labelText = isCash ? "Bukti Pembayaran Tunai" : "Bukti Transfer";
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -54,9 +58,9 @@ export function TransferProofUpload() {
       } else {
         setLocalPreview(null);
       }
-      toast.success("Bukti transfer berhasil diunggah");
+      toast.success(isCash ? "Bukti pembayaran berhasil diunggah" : "Bukti transfer berhasil diunggah");
     } else {
-      toast.error(res.error.message || "Gagal mengunggah bukti transfer");
+      toast.error(res.error.message || (isCash ? "Gagal mengunggah bukti pembayaran" : "Gagal mengunggah bukti transfer"));
     }
   };
 
@@ -76,7 +80,7 @@ export function TransferProofUpload() {
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <label className="text-sm font-semibold text-foreground">
-          Bukti Transfer <span className="text-destructive">*</span>
+          {labelText} <span className="text-destructive">*</span>
         </label>
         {errors.transferProofPath && (
           <span className="text-xs text-destructive font-medium">{errors.transferProofPath}</span>
@@ -109,7 +113,7 @@ export function TransferProofUpload() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={localPreview}
-                alt="Pratinjau Bukti Transfer"
+                alt={isCash ? "Pratinjau Bukti Pembayaran" : "Pratinjau Bukti Transfer"}
                 className="object-contain w-full h-full"
               />
             </div>
@@ -136,7 +140,7 @@ export function TransferProofUpload() {
               <div className="flex flex-col items-center gap-2">
                 <Icons.Spinner className="h-8 w-8 animate-spin text-primary" />
                 <span className="text-xs text-muted-foreground font-medium">
-                  Mengunggah bukti transfer...
+                  {isCash ? "Mengunggah bukti pembayaran..." : "Mengunggah bukti transfer..."}
                 </span>
               </div>
             ) : (

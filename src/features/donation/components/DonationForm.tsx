@@ -71,7 +71,7 @@ export function DonationForm() {
       <PaymentMethodSection />
 
       {/* Dynamic Transfer Proof Upload */}
-      {paymentMethod === PAYMENT_METHODS.BANK_TRANSFER && <TransferProofUpload />}
+      {(paymentMethod === PAYMENT_METHODS.BANK_TRANSFER || paymentMethod === PAYMENT_METHODS.CASH) && <TransferProofUpload />}
 
       {/* Notes Textarea */}
       <div className="space-y-2">

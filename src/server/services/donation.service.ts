@@ -315,10 +315,9 @@ export const DonationService = {
   async validateTransferProof(id: string): Promise<boolean> {
     const donation = await prisma.donation.findUnique({
       where: { id },
-      select: { transferProofPath: true, paymentMethod: true },
+      select: { transferProofPath: true },
     });
     if (!donation) return false;
-    if (donation.paymentMethod !== "BANK_TRANSFER") return true;
     return !!donation.transferProofPath;
   },
 };

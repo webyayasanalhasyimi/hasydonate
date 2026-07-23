@@ -57,13 +57,8 @@ export function DonationPOSProvider({ children }: Readonly<{ children: React.Rea
     notes.trim().length > 0 ||
     !!transferProofPath;
 
-  // Custom setter for payment method to reset proof details immediately
   const handleSetPaymentMethod = (method: PaymentMethod) => {
     setPaymentMethod(method);
-    if (method === "CASH") {
-      setTransferProofPath(null);
-      setTransferProofFilename(null);
-    }
   };
 
   useEffect(() => {

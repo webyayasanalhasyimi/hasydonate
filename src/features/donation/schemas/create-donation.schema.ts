@@ -19,17 +19,17 @@ export const createDonationSchema = z
     transferProofFilename: z.string().optional(),
     donationDate: z.coerce.date().default(() => new Date()),
   })
-  .refine(
-    (data) => {
-      if (data.paymentMethod === PAYMENT_METHODS.BANK_TRANSFER) {
-        return !!data.transferProofPath && !!data.transferProofFilename;
-      }
-      return true;
-    },
-    {
-      message: "Bukti transfer harus diunggah untuk pembayaran bank transfer",
-      path: ["transferProofPath"],
+  .superRefine((data, ctx) => {
+    if (!data.transferProofPath || !data.transferProofFilename) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message:
+          data.paymentMethod === PAYMENT_METHODS.BANK_TRANSFER
+            ? "Bukti transfer harus diunggah untuk pembayaran bank transfer"
+            : "Bukti pembayaran harus diunggah untuk pembayaran tunai",
+        path: ["transferProofPath"],
+      });
     }
-  );
+  });
 
 export type CreateDonationInput = z.infer<typeof createDonationSchema>;

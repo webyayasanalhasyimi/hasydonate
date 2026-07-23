@@ -47,9 +47,11 @@ export function DonationSummaryCard() {
             </div>
           </div>
 
-          {paymentMethod === "BANK_TRANSFER" && (
+          {(paymentMethod === "BANK_TRANSFER" || paymentMethod === "CASH") && (
             <div className="flex flex-col gap-1">
-              <span className="text-xs text-muted-foreground font-medium">Status Bukti Transfer</span>
+              <span className="text-xs text-muted-foreground font-medium">
+                {paymentMethod === "BANK_TRANSFER" ? "Status Bukti Transfer" : "Status Bukti Pembayaran"}
+              </span>
               {transferProofPath ? (
                 <span className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
                   ✓ Berhasil Diunggah

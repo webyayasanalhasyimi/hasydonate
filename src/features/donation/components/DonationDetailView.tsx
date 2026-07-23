@@ -107,11 +107,13 @@ export function DonationDetailView({ donation }: DonationDetailViewProps) {
         </div>
 
         {/* Right Column - Transfer Proof */}
-        {donation.paymentMethod === "BANK_TRANSFER" && (
+        {donation.transferProofPath && (
           <div className="lg:col-span-1">
             <Card>
               <CardHeader>
-                <CardTitle>Bukti Transfer</CardTitle>
+                <CardTitle>
+                  {donation.paymentMethod === "BANK_TRANSFER" ? "Bukti Transfer" : "Bukti Pembayaran"}
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {isLoadingUrl ? (
