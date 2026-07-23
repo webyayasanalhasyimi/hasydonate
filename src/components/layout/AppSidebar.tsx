@@ -79,7 +79,7 @@ export function AppSidebar({ profile }: AppSidebarProps) {
     "flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 hover:text-zinc-950 dark:hover:text-zinc-100 transition-all duration-150 border-l-4 border-transparent";
 
   const renderSidebarContent = (onClose?: () => void) => (
-    <div className="flex flex-col h-full bg-white dark:bg-zinc-950 border-r border-zinc-150 dark:border-zinc-900 w-64">
+    <div className="flex flex-col h-full bg-white dark:bg-zinc-950 border-r border-zinc-150 dark:border-zinc-900 w-full">
       {/* Sidebar Header */}
       <div className="p-6 border-b border-zinc-100 dark:border-zinc-900 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
@@ -193,7 +193,7 @@ export function AppSidebar({ profile }: AppSidebarProps) {
       </header>
 
       {/* Desktop Sidebar (Permanent) */}
-      <aside className="hidden md:flex md:flex-col h-screen sticky top-0 shrink-0">
+      <aside className="hidden md:flex md:flex-col h-screen sticky top-0 shrink-0 w-64">
         {renderSidebarContent()}
       </aside>
 
@@ -207,7 +207,7 @@ export function AppSidebar({ profile }: AppSidebarProps) {
           />
 
           {/* Drawer Panel */}
-          <div className="relative flex flex-col max-w-xs w-full bg-white dark:bg-zinc-950 shadow-2xl transition-transform duration-300 ease-in-out">
+          <div className="relative flex flex-col w-64 bg-white dark:bg-zinc-950 shadow-2xl transition-transform duration-300 ease-in-out">
             {renderSidebarContent(() => setIsOpen(false))}
           </div>
         </div>
