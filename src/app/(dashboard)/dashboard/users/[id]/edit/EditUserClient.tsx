@@ -8,7 +8,7 @@ import { PageContainer } from "@/components/shared";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-import { Role } from "@prisma/client";
+import type { Role } from "@prisma/client";
 
 interface EditUserClientProps {
   readonly user: UserDetailDto;

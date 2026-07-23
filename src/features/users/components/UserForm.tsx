@@ -4,7 +4,8 @@ import React, { useTransition } from "react";
 import { useForm, type Control, type FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Role } from "@prisma/client";
+import type { Role } from "@prisma/client";
+import { ROLES } from "@/constants/roles";
 import { Form } from "@/components/ui/form";
 import { TextField } from "@/components/shared/TextField";
 import { SelectField } from "@/components/shared/SelectField";
@@ -15,7 +16,7 @@ import Link from "next/link";
 const userFormInputSchema = z.object({
   fullName: z.string().min(2, "Nama lengkap minimal 2 karakter"),
   email: z.string().email("Format email tidak valid"),
-  role: z.nativeEnum(Role),
+  role: z.nativeEnum(ROLES),
   isActiveString: z.enum(["true", "false"]),
   password: z
     .string()
@@ -52,7 +53,7 @@ export function UserForm({ initialValues, onSubmit, isEdit = false }: UserFormPr
     defaultValues: {
       fullName: initialValues?.fullName || "",
       email: initialValues?.email || "",
-      role: initialValues?.role || Role.FRONT_ADMIN,
+      role: initialValues?.role || ROLES.FRONT_ADMIN,
       isActiveString: initialValues?.isActive === false ? "false" : "true",
       password: "",
     },
@@ -96,8 +97,8 @@ export function UserForm({ initialValues, onSubmit, isEdit = false }: UserFormPr
             name="role"
             label="Peran Pengguna"
             options={[
-              { label: "Administrator", value: Role.ADMIN },
-              { label: "Front Admin", value: Role.FRONT_ADMIN },
+              { label: "Administrator", value: ROLES.ADMIN },
+              { label: "Front Admin", value: ROLES.FRONT_ADMIN },
             ]}
           />
 

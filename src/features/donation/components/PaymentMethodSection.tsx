@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useDonationPOS } from "../context/donation-pos-context";
-import { PaymentMethod } from "@prisma/client";
+import { PAYMENT_METHODS } from "@/constants/payment-methods";
 import { Icons } from "@/lib/icons";
 
 export function PaymentMethodSection() {
@@ -16,9 +16,9 @@ export function PaymentMethodSection() {
       <div className="grid grid-cols-2 gap-3">
         <button
           type="button"
-          onClick={() => setPaymentMethod(PaymentMethod.CASH)}
+          onClick={() => setPaymentMethod(PAYMENT_METHODS.CASH)}
           className={`flex items-center justify-center gap-3 p-4 border rounded-xl font-semibold transition-all ${
-            paymentMethod === PaymentMethod.CASH
+            paymentMethod === PAYMENT_METHODS.CASH
               ? "border-primary bg-primary/5 text-primary shadow-sm"
               : "border-border hover:bg-muted text-muted-foreground"
           }`}
@@ -29,9 +29,9 @@ export function PaymentMethodSection() {
 
         <button
           type="button"
-          onClick={() => setPaymentMethod(PaymentMethod.BANK_TRANSFER)}
+          onClick={() => setPaymentMethod(PAYMENT_METHODS.BANK_TRANSFER)}
           className={`flex items-center justify-center gap-3 p-4 border rounded-xl font-semibold transition-all ${
-            paymentMethod === PaymentMethod.BANK_TRANSFER
+            paymentMethod === PAYMENT_METHODS.BANK_TRANSFER
               ? "border-primary bg-primary/5 text-primary shadow-sm"
               : "border-border hover:bg-muted text-muted-foreground"
           }`}

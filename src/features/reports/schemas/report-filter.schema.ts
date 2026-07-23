@@ -1,11 +1,12 @@
 import { z } from "zod";
-import { DonationType, PaymentMethod } from "@prisma/client";
+import { DONATION_TYPES } from "@/constants/donation-types";
+import { PAYMENT_METHODS } from "@/constants/payment-methods";
 
 export const reportFilterSchema = z.object({
   dateStart: z.string().optional(),
   dateEnd: z.string().optional(),
-  donationType: z.nativeEnum(DonationType).optional(),
-  paymentMethod: z.nativeEnum(PaymentMethod).optional(),
+  donationType: z.nativeEnum(DONATION_TYPES).optional(),
+  paymentMethod: z.nativeEnum(PAYMENT_METHODS).optional(),
   donorId: z.string().optional(),
   minAmount: z.number().nonnegative().optional(),
   maxAmount: z.number().nonnegative().optional(),

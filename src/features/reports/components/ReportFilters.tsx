@@ -4,7 +4,8 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { type ReportFilterInputValues } from "../schemas/report-filter.schema";
-import { DonationType, PaymentMethod } from "@prisma/client";
+import { DONATION_TYPES } from "@/constants/donation-types";
+import { PAYMENT_METHODS } from "@/constants/payment-methods";
 
 interface ReportFiltersProps {
   readonly filters: ReportFilterInputValues;
@@ -67,9 +68,9 @@ export function ReportFilters({ filters, onChange, onReset }: ReportFiltersProps
             className={selectStyle}
           >
             <option value="">Semua Jenis</option>
-            <option value={DonationType.ZAKAT}>Zakat</option>
-            <option value={DonationType.SHADAQAH}>Shadaqah</option>
-            <option value={DonationType.SUMBANGAN_LAIN}>Sumbangan Lain</option>
+            <option value={DONATION_TYPES.ZAKAT}>Zakat</option>
+            <option value={DONATION_TYPES.SHADAQAH}>Shadaqah</option>
+            <option value={DONATION_TYPES.SUMBANGAN_LAIN}>Sumbangan Lain</option>
           </select>
         </div>
 
@@ -82,8 +83,8 @@ export function ReportFilters({ filters, onChange, onReset }: ReportFiltersProps
             className={selectStyle}
           >
             <option value="">Semua Metode</option>
-            <option value={PaymentMethod.CASH}>Tunai (Cash)</option>
-            <option value={PaymentMethod.BANK_TRANSFER}>Transfer Bank</option>
+            <option value={PAYMENT_METHODS.CASH}>Tunai (Cash)</option>
+            <option value={PAYMENT_METHODS.BANK_TRANSFER}>Transfer Bank</option>
           </select>
         </div>
 

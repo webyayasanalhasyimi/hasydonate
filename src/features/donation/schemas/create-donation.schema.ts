@@ -1,13 +1,14 @@
 import { z } from "zod";
-import { DonationType, PaymentMethod } from "@prisma/client";
+import { DONATION_TYPES } from "@/constants/donation-types";
+import { PAYMENT_METHODS } from "@/constants/payment-methods";
 
 export const createDonationSchema = z
   .object({
     donorId: z.string().uuid("Donatur tidak valid"),
-    donationType: z.nativeEnum(DonationType, {
+    donationType: z.nativeEnum(DONATION_TYPES, {
       message: "Jenis donasi tidak valid",
     }),
-    paymentMethod: z.nativeEnum(PaymentMethod, {
+    paymentMethod: z.nativeEnum(PAYMENT_METHODS, {
       message: "Metode pembayaran tidak valid",
     }),
     amount: z
@@ -20,7 +21,7 @@ export const createDonationSchema = z
   })
   .refine(
     (data) => {
-      if (data.paymentMethod === PaymentMethod.BANK_TRANSFER) {
+      if (data.paymentMethod === PAYMENT_METHODS.BANK_TRANSFER) {
         return !!data.transferProofPath && !!data.transferProofFilename;
       }
       return true;

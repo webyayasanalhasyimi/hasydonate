@@ -2,7 +2,9 @@
 
 import React from "react";
 import { useDonationPOS } from "../context/donation-pos-context";
-import { DonationType, PaymentMethod } from "@prisma/client";
+import type { DonationType } from "@prisma/client";
+import { DONATION_TYPES } from "@/constants/donation-types";
+import { PAYMENT_METHODS } from "@/constants/payment-methods";
 import { CurrencyInput } from "./CurrencyInput";
 import { PaymentMethodSection } from "./PaymentMethodSection";
 import { TransferProofUpload } from "./TransferProofUpload";
@@ -43,9 +45,9 @@ export function DonationForm() {
               <SelectValue placeholder="Pilih jenis donasi" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={DonationType.SHADAQAH}>Shadaqah</SelectItem>
-              <SelectItem value={DonationType.ZAKAT}>Zakat</SelectItem>
-              <SelectItem value={DonationType.SUMBANGAN_LAIN}>Sumbangan Lain</SelectItem>
+              <SelectItem value={DONATION_TYPES.SHADAQAH}>Shadaqah</SelectItem>
+              <SelectItem value={DONATION_TYPES.ZAKAT}>Zakat</SelectItem>
+              <SelectItem value={DONATION_TYPES.SUMBANGAN_LAIN}>Sumbangan Lain</SelectItem>
             </SelectContent>
           </Select>
           {errors.donationType && (
@@ -69,7 +71,7 @@ export function DonationForm() {
       <PaymentMethodSection />
 
       {/* Dynamic Transfer Proof Upload */}
-      {paymentMethod === PaymentMethod.BANK_TRANSFER && <TransferProofUpload />}
+      {paymentMethod === PAYMENT_METHODS.BANK_TRANSFER && <TransferProofUpload />}
 
       {/* Notes Textarea */}
       <div className="space-y-2">

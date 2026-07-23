@@ -7,7 +7,7 @@ import { PageContainer } from "@/components/shared";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-import { Role } from "@prisma/client";
+import type { Role } from "@prisma/client";
 
 export default function NewUserPage() {
   const router = useRouter();
