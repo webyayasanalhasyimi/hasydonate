@@ -114,19 +114,17 @@ Create
 Example
 
 ```env
-DATABASE_URL=""
+DATABASE_URL="postgresql://..."
 
-DIRECT_URL=""
+DIRECT_URL="postgresql://..."
 
-NEXT_PUBLIC_SUPABASE_URL=""
+NEXT_PUBLIC_SUPABASE_URL="https://..."
 
-NEXT_PUBLIC_SUPABASE_ANON_KEY=""
+NEXT_PUBLIC_SUPABASE_ANON_KEY="..."
 
-SUPABASE_SERVICE_ROLE_KEY=""
+SUPABASE_SERVICE_ROLE_KEY="..."
 
-NEXTAUTH_SECRET=""
-
-NEXTAUTH_URL="http://localhost:3000"
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
 ```
 
 Never commit this file.
@@ -199,31 +197,43 @@ Configure Environment Variables
 
 ---
 
-## Storage Bucket
+## Storage Buckets
 
-Create
+1. **transfer-proofs**:
+   - Visibility: Private
+   - Purpose: Stores bank transfer proofs uploaded by admins.
+   - Access: Read/write only via authenticated admins/service role (signed URLs for viewing).
 
-```text
-transfer-proofs
-```
-
-Bucket visibility
-
-```text
-Private
-```
+2. **foundation-assets**:
+   - Visibility: Public (or Private with signed URL access, depending on Supabase settings. Public read allows easy rendering of the foundation logo).
+   - Purpose: Stores branding assets such as the foundation logo.
+   - Access: Write restricted to ADMIN users.
 
 ---
 
-# 11. Authentication
+# 11. Authentication & Admin Creation
 
-Enable Email Authentication.
+Enable Email Authentication in Supabase dashboard.
 
-Disable anonymous access.
+Disable anonymous access and public signup.
 
-Users are created only by Administrator.
+### Creating the First Administrator Account
 
-Supported roles
+Since public sign-ups are disabled, run the administrative script in the workspace to create the first `ADMIN` user:
+
+```bash
+npx tsx scripts/create-admin.ts <email> <password> <fullName>
+```
+
+Example:
+
+```bash
+npx tsx scripts/create-admin.ts admin@alhasyimi.or.id SecurePassword123 "Kepala Yayasan"
+```
+
+Subsequent users (Administrators or Front Admins) can be created directly by logging in as the administrator and using the User Management module in the dashboard.
+
+Supported roles:
 
 ```text
 ADMIN
@@ -304,20 +314,20 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 SUPABASE_SERVICE_ROLE_KEY
 
-NEXTAUTH_SECRET
-
-NEXTAUTH_URL
+NEXT_PUBLIC_APP_URL
 ```
 
-Never expose
+Never expose:
 
 ```
-SERVICE_ROLE_KEY
+SUPABASE_SERVICE_ROLE_KEY
 
 DATABASE_URL
+
+DIRECT_URL
 ```
 
-to Client Components.
+to Client Components (ensure they do not have the `NEXT_PUBLIC_` prefix).
 
 ---
 
