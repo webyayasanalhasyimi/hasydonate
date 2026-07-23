@@ -17,6 +17,14 @@ const clientSchema = z.object({
 
 const isServer = typeof window === "undefined";
 
+const formatUrl = (url: string | undefined): string | undefined => {
+  if (!url) return undefined;
+  if (!url.startsWith("http://") && !url.startsWith("https://")) {
+    return `https://${url}`;
+  }
+  return url;
+};
+
 const getEnv = (): z.infer<typeof serverSchema> | z.infer<typeof clientSchema> => {
   if (isServer) {
     const rawEnv = {
@@ -25,7 +33,7 @@ const getEnv = (): z.infer<typeof serverSchema> | z.infer<typeof clientSchema> =
       NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
       NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
       SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
-      NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_VERCEL_URL || "http://localhost:3000",
+      NEXT_PUBLIC_APP_URL: formatUrl(process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_VERCEL_URL) || "http://localhost:3000",
     };
 
     // In local development/test, we can default SUPABASE_SERVICE_ROLE_KEY if not set,
@@ -59,7 +67,7 @@ const getEnv = (): z.infer<typeof serverSchema> | z.infer<typeof clientSchema> =
     const parsed = clientSchema.safeParse({
       NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
       NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-      NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+      NEXT_PUBLIC_APP_URL: formatUrl(process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_VERCEL_URL) || "http://localhost:3000",
     });
     if (!parsed.success) {
       const errorMsg = parsed.error.issues
