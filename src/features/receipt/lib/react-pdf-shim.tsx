@@ -1,13 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
+import * as realPdf from "@react-pdf/renderer";
 
-let realPdf: any = null;
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  realPdf = require("@react-pdf/renderer");
-} catch {
-  // Fallback for offline sandbox compilation
-}
 
 export const Document: React.ComponentType<any> = realPdf?.Document || (({ children }: any) => <div className="pdf-document">{children}</div>);
 export const Page: React.ComponentType<any> = realPdf?.Page || (({ children }: any) => <div className="pdf-page">{children}</div>);

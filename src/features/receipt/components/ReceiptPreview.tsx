@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "@/lib/icons";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { formatWhatsAppNumber } from "@/lib/utils/phone";
+import { formatIDR } from "@/lib/utils/currency";
 
 interface ReceiptPreviewProps {
   readonly data: ReceiptData;
@@ -40,6 +42,38 @@ export function ReceiptPreview({ data }: ReceiptPreviewProps) {
 
   const handlePrint = () => {
     printReceipt();
+  };
+
+  const handleShareWhatsApp = () => {
+    try {
+      const formattedPhone = formatWhatsAppNumber(data.donorPhone);
+      const dateFormatted = new Date(data.donationDate).toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+
+      const message = `Halo Bapak/Ibu *${data.donorName}*,
+
+Terima kasih atas donasi Anda!
+Berikut adalah tautan kwitansi resmi Anda dari *${data.foundationName}*:
+${data.verificationUrl}
+
+*Detail Donasi:*
+• No. Kwitansi: _${data.receiptNumber}_
+• Tanggal: _${dateFormatted}_
+• Jenis Donasi: _${data.donationType}_
+• Jumlah: *${formatIDR(data.amount)}*
+• Metode: _${data.paymentMethod === "CASH" ? "Tunai / Cash" : "Transfer Bank"}_
+${data.notes ? `• Keterangan: _${data.notes}_\n` : ""}
+Semoga menjadi berkah dan amal jariyah.`;
+
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedPhone}&text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, "_blank");
+      toast.success("Membuka WhatsApp untuk berbagi...");
+    } catch {
+      toast.error("Gagal membagikan ke WhatsApp");
+    }
   };
 
   return (
@@ -78,9 +112,9 @@ export function ReceiptPreview({ data }: ReceiptPreviewProps) {
               </>
             )}
           </Button>
-          <Button variant="secondary" size="sm" disabled className="opacity-50 cursor-not-allowed">
+          <Button variant="secondary" size="sm" onClick={handleShareWhatsApp}>
             <Icons.Share className="h-4 w-4 mr-2" />
-            Kirim WA (Segera)
+            Kirim WA
           </Button>
         </div>
       </div>
