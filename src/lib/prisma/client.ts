@@ -7,7 +7,12 @@ const prismaClientSingleton = (): PrismaClient => {
   if (!connectionString) {
     throw new Error("DATABASE_URL environment variable is missing.");
   }
-  const pool = new Pool({ connectionString });
+  const pool = new Pool({
+    connectionString,
+    max: 2,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 2000,
+  });
   const adapter = new PrismaPg(pool);
   return new PrismaClient({ adapter });
 };

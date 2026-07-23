@@ -4,8 +4,8 @@ export const ROUTES = {
   },
   DASHBOARD: {
     HOME: "/dashboard",
-    DONORS: "/dashboard/donors",
-    DONATIONS: "/dashboard/donations",
+    DONORS: "/dashboard/donatur",
+    DONATIONS: "/dashboard/donation",
     REPORTS: "/dashboard/reports",
     USERS: "/dashboard/users",
     SETTINGS: "/dashboard/settings",
