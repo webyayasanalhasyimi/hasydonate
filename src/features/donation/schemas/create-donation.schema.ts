@@ -40,12 +40,16 @@ export const createDonationSchema = z
     }
 
     if (!data.transferProofPath || !data.transferProofFilename) {
+      let message = "Bukti pembayaran harus diunggah untuk pembayaran tunai";
+      if (data.donationType === DONATION_TYPES.BARANG) {
+        message = "Bukti penyerahan harus diunggah untuk donasi barang";
+      } else if (data.paymentMethod === PAYMENT_METHODS.BANK_TRANSFER) {
+        message = "Bukti transfer harus diunggah untuk pembayaran bank transfer";
+      }
+
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message:
-          data.paymentMethod === PAYMENT_METHODS.BANK_TRANSFER
-            ? "Bukti transfer harus diunggah untuk pembayaran bank transfer"
-            : "Bukti pembayaran harus diunggah untuk pembayaran tunai",
+        message,
         path: ["transferProofPath"],
       });
     }

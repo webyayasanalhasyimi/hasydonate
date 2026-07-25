@@ -43,30 +43,34 @@ export function DonationSummaryCard() {
               </Badge>
             </div>
 
-            <div className="flex flex-col gap-1">
-              <span className="text-xs text-muted-foreground font-medium">Metode</span>
-              <Badge variant="outline" className="w-fit">
-                {paymentMethod === "CASH" ? "Tunai" : "Transfer Bank"}
-              </Badge>
-            </div>
+            {!isBarang && (
+              <div className="flex flex-col gap-1">
+                <span className="text-xs text-muted-foreground font-medium">Metode</span>
+                <Badge variant="outline" className="w-fit">
+                  {paymentMethod === "CASH" ? "Tunai" : "Transfer Bank"}
+                </Badge>
+              </div>
+            )}
           </div>
 
-          {(paymentMethod === "BANK_TRANSFER" || paymentMethod === "CASH") && (
-            <div className="flex flex-col gap-1">
-              <span className="text-xs text-muted-foreground font-medium">
-                {paymentMethod === "BANK_TRANSFER" ? "Status Bukti Transfer" : "Status Bukti Pembayaran"}
+          <div className="flex flex-col gap-1">
+            <span className="text-xs text-muted-foreground font-medium">
+              {isBarang
+                ? "Status Bukti Penyerahan"
+                : paymentMethod === "BANK_TRANSFER"
+                ? "Status Bukti Transfer"
+                : "Status Bukti Pembayaran"}
+            </span>
+            {transferProofPath ? (
+              <span className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
+                ✓ Berhasil Diunggah
               </span>
-              {transferProofPath ? (
-                <span className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
-                  ✓ Berhasil Diunggah
-                </span>
-              ) : (
-                <span className="text-xs text-destructive font-semibold flex items-center gap-1">
-                  ✗ Belum Diunggah
-                </span>
-              )}
-            </div>
-          )}
+            ) : (
+              <span className="text-xs text-destructive font-semibold flex items-center gap-1">
+                ✗ Belum Diunggah
+              </span>
+            )}
+          </div>
         </div>
 
         <div className="pt-4 border-t border-dashed border-border flex flex-col gap-1">

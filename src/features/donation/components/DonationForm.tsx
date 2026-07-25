@@ -90,10 +90,10 @@ export function DonationForm() {
       </div>
 
       {/* Payment Method Selections */}
-      <PaymentMethodSection />
+      {!isBarang && <PaymentMethodSection />}
 
       {/* Dynamic Transfer Proof Upload */}
-      {(paymentMethod === "BANK_TRANSFER" || paymentMethod === "CASH") && <TransferProofUpload />}
+      {(isBarang || paymentMethod === "BANK_TRANSFER" || paymentMethod === "CASH") && <TransferProofUpload />}
 
       {/* Notes Textarea */}
       <div className="space-y-2">

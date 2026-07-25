@@ -7,8 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "@/lib/icons";
 import { toast } from "sonner";
 
+import { DONATION_TYPES } from "@/constants/donation-types";
+
 export function TransferProofUpload() {
   const {
+    donationType,
     paymentMethod,
     transferProofPath,
     setTransferProofPath,
@@ -22,8 +25,13 @@ export function TransferProofUpload() {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const isBarang = donationType === DONATION_TYPES.BARANG;
   const isCash = paymentMethod === "CASH";
-  const labelText = isCash ? "Bukti Pembayaran Tunai" : "Bukti Transfer";
+  const labelText = isBarang
+    ? "Bukti Penyerahan"
+    : isCash
+    ? "Bukti Pembayaran Tunai"
+    : "Bukti Transfer";
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -58,9 +66,22 @@ export function TransferProofUpload() {
       } else {
         setLocalPreview(null);
       }
-      toast.success(isCash ? "Bukti pembayaran berhasil diunggah" : "Bukti transfer berhasil diunggah");
+      toast.success(
+        isBarang
+          ? "Bukti penyerahan berhasil diunggah"
+          : isCash
+          ? "Bukti pembayaran berhasil diunggah"
+          : "Bukti transfer berhasil diunggah"
+      );
     } else {
-      toast.error(res.error.message || (isCash ? "Gagal mengunggah bukti pembayaran" : "Gagal mengunggah bukti transfer"));
+      toast.error(
+        res.error.message ||
+          (isBarang
+            ? "Gagal mengunggah bukti penyerahan"
+            : isCash
+            ? "Gagal mengunggah bukti pembayaran"
+            : "Gagal mengunggah bukti transfer")
+      );
     }
   };
 
@@ -113,7 +134,13 @@ export function TransferProofUpload() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={localPreview}
-                alt={isCash ? "Pratinjau Bukti Pembayaran" : "Pratinjau Bukti Transfer"}
+                alt={
+                  isBarang
+                    ? "Pratinjau Bukti Penyerahan"
+                    : isCash
+                    ? "Pratinjau Bukti Pembayaran"
+                    : "Pratinjau Bukti Transfer"
+                }
                 className="object-contain w-full h-full"
               />
             </div>
@@ -140,7 +167,11 @@ export function TransferProofUpload() {
               <div className="flex flex-col items-center gap-2">
                 <Icons.Spinner className="h-8 w-8 animate-spin text-primary" />
                 <span className="text-xs text-muted-foreground font-medium">
-                  {isCash ? "Mengunggah bukti pembayaran..." : "Mengunggah bukti transfer..."}
+                  {isBarang
+                    ? "Mengunggah bukti penyerahan..."
+                    : isCash
+                    ? "Mengunggah bukti pembayaran..."
+                    : "Mengunggah bukti transfer..."}
                 </span>
               </div>
             ) : (
