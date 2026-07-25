@@ -531,7 +531,7 @@ export function A5PdfTemplate({ data }: Readonly<{ data: ReceiptData }>) {
               </View>
               <View style={styles.qrContainer}>
                 <Image
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(data.verificationUrl ?? "")}`}
+                  src={`https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=${encodeURIComponent(data.verificationUrl ?? "")}`}
                   style={styles.qrPlaceholder}
                 />
                 <Text style={styles.qrLabel}>Scan untuk{"\n"}Lihat Kwitansi</Text>

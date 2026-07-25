@@ -96,9 +96,12 @@ export const generateReceiptAction = async (donationId: string): Promise<Result<
   }
 };
 
-export const getPublicReceiptAction = async (donationId: string): Promise<Result<ReceiptData>> => {
+export const getPublicReceiptAction = async (donationIdOrNumber: string): Promise<Result<ReceiptData>> => {
   try {
-    const donation = await DonationService.findById(donationId);
+    let donation = await DonationService.findById(donationIdOrNumber);
+    if (!donation) {
+      donation = await DonationService.getByDonationNumber(donationIdOrNumber);
+    }
     if (!donation) {
       return failure(new Error("Donation data could not be found."));
     }

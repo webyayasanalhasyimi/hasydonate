@@ -48,7 +48,7 @@ export const buildReceiptData = (
 
     // Placeholders
     verificationCode: `VERIFY-${donation.donationNumber.split("-").pop()}`,
-    verificationUrl: `${env.NEXT_PUBLIC_APP_URL}/receipts/${donation.id}`,
+    verificationUrl: `${env.NEXT_PUBLIC_APP_URL}/receipts/${donation.donationNumber}`,
     qrPlaceholderUrl: "/placeholder-qr.png",
     statusLabel: "LUNAS",
     watermarkText: "YAYASAN AL-HASYIMI",
