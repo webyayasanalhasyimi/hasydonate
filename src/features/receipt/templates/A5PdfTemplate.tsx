@@ -2,18 +2,18 @@ import React from "react";
 import { Document, Page, Text, View, StyleSheet, Image, Font } from "@/features/receipt/lib/react-pdf-shim";
 import { type ReceiptData } from "../types";
 
-// Register Inter font — must be absolute URLs for @react-pdf/renderer browser worker
-// We register inside a function called at render time so window is available.
+// Register Noto Sans — same font the browser resolves for system ui-sans-serif on this OS
+// Must be absolute URLs served from /public for the @react-pdf/renderer browser worker.
 let fontsRegistered = false;
 function ensureFontsRegistered() {
   if (fontsRegistered) return;
   if (typeof window !== "undefined") {
     const base = window.location.origin;
     Font.register({
-      family: "Inter",
+      family: "NotoSans",
       fonts: [
-        { src: `${base}/Inter-Regular.ttf`, fontWeight: "normal" },
-        { src: `${base}/Inter-Bold.ttf`, fontWeight: "bold" },
+        { src: `${base}/NotoSans-Regular.ttf`, fontWeight: "normal" },
+        { src: `${base}/NotoSans-Bold.ttf`, fontWeight: "bold" },
       ],
     });
     fontsRegistered = true;
@@ -26,7 +26,7 @@ import { DONATION_TYPES } from "@/constants/donation-types";
 const styles = StyleSheet.create({
   page: {
     padding: 22,
-    fontFamily: "Inter",
+    fontFamily: "NotoSans",
     fontSize: 9,
     color: "#1f2937",
     display: "flex",
