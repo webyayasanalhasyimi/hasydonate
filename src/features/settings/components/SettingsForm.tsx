@@ -8,6 +8,7 @@ import { type FoundationSettingsDto } from "../types";
 import { getSettingsAction } from "@/server/actions/settings/get-settings";
 import { updateSettingsAction } from "@/server/actions/settings/update-settings";
 import { uploadLogoAction } from "@/server/actions/settings/upload-logo";
+import { uploadStampAction } from "@/server/actions/settings/upload-stamp";
 import { useSettingsFormWarning } from "../hooks/useSettingsForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,7 @@ export function SettingsForm() {
   const [isUploading, setIsUploading] = useState(false);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [signaturePreview, setSignaturePreview] = useState<string | null>(null);
+  const [stampPreview, setStampPreview] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<SettingsFormValues>({
@@ -34,6 +36,7 @@ export function SettingsForm() {
       foundationWebsite: "",
       foundationLogoPath: "",
       foundationSignaturePath: "",
+      foundationStampPath: "",
       bankName: "",
       bankAccountNumber: "",
       bankAccountName: "",
@@ -64,6 +67,9 @@ export function SettingsForm() {
         }
         if (res.data.signatureUrl) {
           setSignaturePreview(res.data.signatureUrl);
+        }
+        if (res.data.stampUrl) {
+          setStampPreview(res.data.stampUrl);
         }
       } else {
         toast.error("Gagal memuat pengaturan.");
@@ -134,9 +140,44 @@ export function SettingsForm() {
     setSignaturePreview(null);
   };
 
+  const handleStampUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error("Ukuran file stempel maksimal 2MB.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("stamp", file);
+
+    setIsUploading(true);
+    const res = await uploadStampAction(formData);
+    setIsUploading(false);
+
+    if (res.success) {
+      setValue("foundationStampPath", res.data, { shouldDirty: true });
+      setStampPreview(URL.createObjectURL(file));
+      toast.success("Stempel berhasil diunggah.");
+    } else {
+      toast.error(res.error.message || "Gagal mengunggah stempel.");
+    }
+  };
+
+  const handleRemoveStamp = () => {
+    setValue("foundationStampPath", "", { shouldDirty: true });
+    setStampPreview(null);
+  };
+
   const onSubmit = (values: SettingsFormValues) => {
     startTransition(async () => {
-      const res = await updateSettingsAction(values, initialData?.foundationLogoPath, initialData?.foundationSignaturePath);
+      const res = await updateSettingsAction(
+        values,
+        initialData?.foundationLogoPath,
+        initialData?.foundationSignaturePath,
+        initialData?.foundationStampPath
+      );
       if (res.success) {
         toast.success("Pengaturan berhasil disimpan.");
         // Sync states to reset dirty checks
@@ -144,6 +185,7 @@ export function SettingsForm() {
           ...values,
           ...(logoPreview ? { logoUrl: logoPreview } : {}),
           ...(signaturePreview ? { signatureUrl: signaturePreview } : {}),
+          ...(stampPreview ? { stampUrl: stampPreview } : {}),
         };
         setInitialData(nextData);
         reset(values);
@@ -404,6 +446,48 @@ export function SettingsForm() {
               )}
               {errors.foundationSignaturePath && (
                 <span className="text-xs text-destructive block mt-1">{errors.foundationSignaturePath.message}</span>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-3 border-b border-border bg-muted/10">
+              <CardTitle className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
+                Stempel Yayasan
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6 space-y-4 text-center">
+              {stampPreview ? (
+                <div className="space-y-3">
+                  <div className="relative aspect-square w-full max-w-[150px] mx-auto border border-border rounded-xl overflow-hidden bg-muted/10 flex items-center justify-center p-2">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={stampPreview} alt="Stempel Preview" className="object-contain max-h-full max-w-full" />
+                  </div>
+                  <div className="flex justify-center gap-2">
+                    <Button type="button" variant="outline" size="sm" onClick={handleRemoveStamp}>
+                      <Icons.Trash className="h-4 w-4 mr-2 text-destructive" />
+                      Hapus
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="border-2 border-dashed border-border rounded-xl p-6 flex flex-col items-center justify-center gap-2 bg-muted/5">
+                  <Icons.Upload className="h-8 w-8 text-muted-foreground" />
+                  <span className="text-xs font-medium text-muted-foreground">Unggah Stempel Resmi</span>
+                  <span className="text-[10px] text-muted-foreground">Format PNG/JPG/JPEG, Maks 2MB</span>
+                  <label className="cursor-pointer mt-2">
+                    <span className="inline-flex items-center justify-center rounded-md text-xs font-bold h-8 px-3 border border-border bg-background hover:bg-muted text-foreground transition-all">
+                      Pilih File
+                    </span>
+                    <input type="file" accept="image/png, image/jpeg, image/jpg" onChange={handleStampUpload} className="hidden" disabled={isUploading} />
+                  </label>
+                  {isUploading && (
+                    <span className="text-[10px] text-muted-foreground animate-pulse mt-1">Mengunggah...</span>
+                  )}
+                </div>
+              )}
+              {errors.foundationStampPath && (
+                <span className="text-xs text-destructive block mt-1">{errors.foundationStampPath.message}</span>
               )}
             </CardContent>
           </Card>

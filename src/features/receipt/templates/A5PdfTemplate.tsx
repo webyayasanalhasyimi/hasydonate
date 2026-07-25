@@ -288,6 +288,21 @@ const styles = StyleSheet.create({
   signatureImagePlaceholder: {
     height: 32,
   },
+  approvedByContainer: {
+    position: "relative",
+    height: 32,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  stampImage: {
+    position: "absolute",
+    left: 20,
+    top: -4,
+    width: 36,
+    height: 36,
+    opacity: 0.8,
+  },
   signatureName: {
     fontSize: 8,
     fontWeight: "bold",
@@ -491,11 +506,16 @@ export function A5PdfTemplate({ data }: Readonly<{ data: ReceiptData }>) {
               </View>
               <View style={styles.signatureCol}>
                 <Text style={styles.signatureLabel}>Mengetahui:</Text>
-                {data.approvedBySignatureUrl ? (
-                  <Image src={data.approvedBySignatureUrl} style={styles.signatureImage} />
-                ) : (
-                  <View style={styles.signatureImagePlaceholder} />
-                )}
+                <View style={styles.approvedByContainer}>
+                  {data.approvedByStampUrl && (
+                    <Image src={data.approvedByStampUrl} style={styles.stampImage} />
+                  )}
+                  {data.approvedBySignatureUrl ? (
+                    <Image src={data.approvedBySignatureUrl} style={styles.signatureImage} />
+                  ) : (
+                    <View style={styles.signatureImagePlaceholder} />
+                  )}
+                </View>
                 <Text style={styles.signatureName}>{data.signatureName}</Text>
                 <Text style={styles.signatureRole}>{data.signaturePosition}</Text>
               </View>

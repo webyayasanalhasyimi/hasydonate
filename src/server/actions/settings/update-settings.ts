@@ -12,7 +12,8 @@ import { type FoundationSettingsDto } from "@/features/settings/types";
 export const updateSettingsAction = async (
   values: unknown,
   oldLogoPath?: string,
-  oldSignaturePath?: string
+  oldSignaturePath?: string,
+  oldStampPath?: string
 ): Promise<Result<readonly unknown[]>> => {
   try {
     const user = await requireAdmin();
@@ -53,9 +54,22 @@ export const updateSettingsAction = async (
       }
     }
 
+    // Stamp replacement: delete the old stamp from storage if path changed
+    const newStampPath = parsed.data.foundationStampPath;
+    if (oldStampPath && newStampPath && oldStampPath !== newStampPath) {
+      try {
+        const parts = oldStampPath.split("/");
+        const bucket = parts[0] ?? "foundation-assets";
+        const cleanPath = parts.slice(1).join("/");
+        await deleteFile(bucket, cleanPath);
+      } catch {
+        // Fail silently
+      }
+    }
+
     return success(result);
   } catch (err) {
-    // Cleanup: If database update fails, delete the newly uploaded logo/signature
+    // Cleanup: If database update fails, delete the newly uploaded logo/signature/stamp
     const dataObj = values as Record<string, unknown> | null;
     const newLogo = dataObj?.foundationLogoPath as string | null;
     if (newLogo && newLogo !== oldLogoPath) {
@@ -73,6 +87,18 @@ export const updateSettingsAction = async (
     if (newSignature && newSignature !== oldSignaturePath) {
       try {
         const parts = newSignature.split("/");
+        const bucket = parts[0] ?? "foundation-assets";
+        const cleanPath = parts.slice(1).join("/");
+        await deleteFile(bucket, cleanPath);
+      } catch {
+        // Fail silently
+      }
+    }
+
+    const newStamp = dataObj?.foundationStampPath as string | null;
+    if (newStamp && newStamp !== oldStampPath) {
+      try {
+        const parts = newStamp.split("/");
         const bucket = parts[0] ?? "foundation-assets";
         const cleanPath = parts.slice(1).join("/");
         await deleteFile(bucket, cleanPath);

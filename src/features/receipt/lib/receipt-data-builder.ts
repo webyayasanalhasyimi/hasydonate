@@ -9,7 +9,8 @@ export const buildReceiptData = (
   settings: ReadonlyArray<{ readonly key: string; readonly value: string }>,
   logoUrl?: string,
   receivedBySignatureUrl?: string,
-  approvedBySignatureUrl?: string
+  approvedBySignatureUrl?: string,
+  approvedByStampUrl?: string
 ): ReceiptData => {
   const getSetting = (key: string): string => {
     const found = settings.find((s) => s.key === key);
@@ -54,6 +55,7 @@ export const buildReceiptData = (
     logoUrl,
     receivedBySignatureUrl,
     approvedBySignatureUrl,
+    approvedByStampUrl,
     itemDescription: donation.itemDescription,
   };
 

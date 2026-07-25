@@ -36,10 +36,18 @@ export function PrintReceiptSignature({ data }: Readonly<{ data: ReceiptData }>)
         {/* Right: Authorizer / Approved By (from Settings) */}
         <div className="flex flex-col justify-between h-20">
           <span className="text-muted-foreground block text-[9px] uppercase tracking-wide">Mengetahui (Approved By):</span>
-          <div className="flex flex-col items-center justify-center flex-1 h-10 my-1">
+          <div className="relative flex flex-col items-center justify-center flex-1 h-10 my-1">
+            {data.approvedByStampUrl && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={data.approvedByStampUrl}
+                alt="Stamp"
+                className="absolute left-[10%] top-1/2 -translate-y-1/2 h-14 w-14 object-contain opacity-80 pointer-events-none z-10"
+              />
+            )}
             {data.approvedBySignatureUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={data.approvedBySignatureUrl} alt="Signature" className="h-8 object-contain" />
+              <img src={data.approvedBySignatureUrl} alt="Signature" className="h-8 object-contain relative z-0" />
             ) : (
               <div className="h-8" />
             )}

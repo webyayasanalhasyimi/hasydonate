@@ -6,6 +6,7 @@ export const SETTINGS_KEYS = {
   FOUNDATION_WEBSITE: "foundation.website",
   FOUNDATION_LOGO_PATH: "foundation.logoPath",
   FOUNDATION_SIGNATURE_PATH: "foundation.signaturePath",
+  FOUNDATION_STAMP_PATH: "foundation.stampPath",
   
   BANK_NAME: "bank.name",
   BANK_ACCOUNT_NUMBER: "bank.accountNumber",
@@ -23,9 +24,10 @@ export const SETTINGS_DEFAULTS = {
   [SETTINGS_KEYS.FOUNDATION_ADDRESS]: "Jl. Kedung Tomas II No.26A, Surabaya",
   [SETTINGS_KEYS.FOUNDATION_PHONE]: "087824429612",
   [SETTINGS_KEYS.FOUNDATION_EMAIL]: "info@alhasyimi.or.id",
-  [SETTINGS_KEYS.FOUNDATION_WEBSITE]: "https://alhasyimi.or.id",
+  [SETTINGS_KEYS.FOUNDATION_WEBSITE]: "https://hasydonate.vercel.app",
   [SETTINGS_KEYS.FOUNDATION_LOGO_PATH]: "",
   [SETTINGS_KEYS.FOUNDATION_SIGNATURE_PATH]: "",
+  [SETTINGS_KEYS.FOUNDATION_STAMP_PATH]: "",
   
   [SETTINGS_KEYS.BANK_NAME]: "BSI",
   [SETTINGS_KEYS.BANK_ACCOUNT_NUMBER]: "1106060618",

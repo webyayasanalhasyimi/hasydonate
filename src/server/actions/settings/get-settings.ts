@@ -38,10 +38,23 @@ export const getSettingsAction = async (): Promise<Result<FoundationSettingsDto>
       }
     }
 
+    let stampUrl: string | undefined = undefined;
+    if (dto.foundationStampPath) {
+      try {
+        const parts = dto.foundationStampPath.split("/");
+        const bucket = parts[0] ?? "foundation-assets";
+        const cleanPath = parts.slice(1).join("/");
+        stampUrl = await getSignedUrl(bucket, cleanPath);
+      } catch {
+        // Silent catch for missing or invalid storage path
+      }
+    }
+
     return success({
       ...dto,
       logoUrl,
       signatureUrl,
+      stampUrl,
     });
   } catch (err) {
     return failure(err);

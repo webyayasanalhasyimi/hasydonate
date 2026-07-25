@@ -67,12 +67,27 @@ export const generateReceiptAction = async (donationId: string): Promise<Result<
       }
     }
 
+    // Resolve signed URL for the approved by stamp if it exists
+    let approvedByStampUrl: string | undefined = undefined;
+    const foundStampSetting = settings.find((s) => s.key === "foundation.stampPath");
+    if (foundStampSetting?.value) {
+      try {
+        const parts = foundStampSetting.value.split("/");
+        const bucket = parts[0] ?? "foundation-assets";
+        const cleanPath = parts.slice(1).join("/");
+        approvedByStampUrl = await getSignedUrl(bucket, cleanPath);
+      } catch {
+        // Silent catch
+      }
+    }
+
     const receiptData = buildReceiptData(
       donation,
       settings,
       logoUrl,
       receivedBySignatureUrl,
-      approvedBySignatureUrl
+      approvedBySignatureUrl,
+      approvedByStampUrl
     );
 
     return success(receiptData);
@@ -136,12 +151,27 @@ export const getPublicReceiptAction = async (donationId: string): Promise<Result
       }
     }
 
+    // Resolve signed URL for the approved by stamp if it exists
+    let approvedByStampUrl: string | undefined = undefined;
+    const foundStampSetting = settings.find((s) => s.key === "foundation.stampPath");
+    if (foundStampSetting?.value) {
+      try {
+        const parts = foundStampSetting.value.split("/");
+        const bucket = parts[0] ?? "foundation-assets";
+        const cleanPath = parts.slice(1).join("/");
+        approvedByStampUrl = await getSignedUrl(bucket, cleanPath);
+      } catch {
+        // Silent catch
+      }
+    }
+
     const receiptData = buildReceiptData(
       donation,
       settings,
       logoUrl,
       receivedBySignatureUrl,
-      approvedBySignatureUrl
+      approvedBySignatureUrl,
+      approvedByStampUrl
     );
 
     return success(receiptData);
