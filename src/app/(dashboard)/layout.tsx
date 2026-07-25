@@ -1,6 +1,7 @@
 import { type ReactNode } from "react";
 import { requireAuth } from "@/lib/auth";
 import { AppSidebar } from "@/components/layout/AppSidebar";
+import { redirect } from "next/navigation";
 
 interface DashboardLayoutProps {
   readonly children: ReactNode;
@@ -8,7 +9,13 @@ interface DashboardLayoutProps {
 
 export default async function DashboardLayout({ children }: DashboardLayoutProps) {
   // Enforce server-side authentication
-  const { profile } = await requireAuth();
+  let profile;
+  try {
+    const authResult = await requireAuth();
+    profile = authResult.profile;
+  } catch (error) {
+    redirect("/login");
+  }
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-zinc-50 dark:bg-zinc-950">
