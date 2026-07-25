@@ -9,8 +9,8 @@ export const userFormSchema = z.object({
   password: z
     .string()
     .default("")
-    .refine((val) => val === "" || val.length >= 6, {
-      message: "Kata sandi harus minimal 6 karakter jika diisi",
+    .refine((val) => val === "" || val.length >= 8, {
+      message: "Kata sandi harus minimal 8 karakter jika diisi",
     }),
 });
 

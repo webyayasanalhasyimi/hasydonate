@@ -21,8 +21,8 @@ const userFormInputSchema = z.object({
   password: z
     .string()
     .default("")
-    .refine((val) => val === "" || val.length >= 6, {
-      message: "Kata sandi harus minimal 6 karakter jika diisi",
+    .refine((val) => val === "" || val.length >= 8, {
+      message: "Kata sandi harus minimal 8 karakter jika diisi",
     }),
 });
 
@@ -122,7 +122,7 @@ export function UserForm({ initialValues, onSubmit, isEdit = false }: UserFormPr
               label={isEdit ? "Kata Sandi Baru (Opsional)" : "Kata Sandi Awal"}
               placeholder={isEdit ? "Kosongkan jika tidak ingin diubah..." : "Masukkan kata sandi..."}
               type="password"
-              description={isEdit ? "Isi kolom ini jika ingin mereset kata sandi pengguna." : "Wajib diisi minimal 6 karakter."}
+              description={isEdit ? "Isi kolom ini jika ingin mereset kata sandi pengguna." : "Wajib diisi minimal 8 karakter."}
             />
           </div>
         </div>
