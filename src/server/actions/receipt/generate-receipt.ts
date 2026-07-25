@@ -9,7 +9,6 @@ import { type Result } from "@/types/action";
 import { success, failure } from "../action-result";
 import { PaymentMethod } from "@prisma/client";
 import { getSignedUrl } from "@/lib/storage/signed-url";
-import QRCode from "qrcode";
 
 export const generateReceiptAction = async (donationId: string): Promise<Result<ReceiptData>> => {
   try {
@@ -91,18 +90,9 @@ export const generateReceiptAction = async (donationId: string): Promise<Result<
       approvedByStampUrl
     );
 
-    let qrCodeDataUrl: string | undefined = undefined;
-    if (receiptData.verificationUrl) {
-      try {
-        const svgString = await QRCode.toString(receiptData.verificationUrl, {
-          type: "svg",
-          margin: 1,
-        });
-        qrCodeDataUrl = `data:image/svg+xml;utf8,${encodeURIComponent(svgString)}`;
-      } catch (err) {
-        console.error("QR Code generation error:", err);
-      }
-    }
+    const qrCodeDataUrl = receiptData.verificationUrl
+      ? `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(receiptData.verificationUrl)}`
+      : undefined;
 
     return success({
       ...receiptData,
@@ -194,18 +184,9 @@ export const getPublicReceiptAction = async (donationIdOrNumber: string): Promis
       approvedByStampUrl
     );
 
-    let qrCodeDataUrl: string | undefined = undefined;
-    if (receiptData.verificationUrl) {
-      try {
-        const svgString = await QRCode.toString(receiptData.verificationUrl, {
-          type: "svg",
-          margin: 1,
-        });
-        qrCodeDataUrl = `data:image/svg+xml;utf8,${encodeURIComponent(svgString)}`;
-      } catch (err) {
-        console.error("QR Code generation error:", err);
-      }
-    }
+    const qrCodeDataUrl = receiptData.verificationUrl
+      ? `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(receiptData.verificationUrl)}`
+      : undefined;
 
     return success({
       ...receiptData,
