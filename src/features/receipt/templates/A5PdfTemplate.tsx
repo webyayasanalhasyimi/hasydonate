@@ -507,7 +507,7 @@ export function A5PdfTemplate({ data }: Readonly<{ data: ReceiptData }>) {
               <>
                 <View style={styles.amountSpelledContainer}>
                   <Text style={styles.amountSpelledLabel}>Terbilang (Spelled in Words):</Text>
-                  <Text style={styles.amountSpelledText}>&ldquo; {data.amountSpelled} &rdquo;</Text>
+                  <Text style={styles.amountSpelledText}>" {data.amountSpelled} "</Text>
                 </View>
                 <View style={styles.amountValueContainer}>
                   <Text style={styles.amountValueLabel}>Jumlah Donasi:</Text>
