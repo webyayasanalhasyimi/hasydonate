@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   signatureCol: {
-    width: "30%",
+    width: "45%",
     textAlign: "center",
   },
   signatureLabel: {
@@ -464,11 +464,6 @@ export function A5PdfTemplate({ data }: Readonly<{ data: ReceiptData }>) {
                 <Text style={styles.signatureLabel}>Diterima Oleh:</Text>
                 <Text style={styles.signatureName}>{data.receivedBy}</Text>
                 <Text style={styles.signatureRole}>Front Admin</Text>
-              </View>
-              <View style={styles.signatureCol}>
-                <Text style={styles.signatureLabel}>Petugas:</Text>
-                <Text style={styles.signatureName}>Yayasan Al-Hasyimi</Text>
-                <Text style={styles.signatureRole}>Administrasi</Text>
               </View>
               <View style={styles.signatureCol}>
                 <Text style={styles.signatureLabel}>Mengetahui:</Text>

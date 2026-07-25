@@ -13,7 +13,7 @@ export function PrintReceiptSignature({ data }: Readonly<{ data: ReceiptData }>)
       <div className="text-right text-muted-foreground italic">
         Surabaya, {dateFormatted}
       </div>
-      <div className="grid grid-cols-3 gap-4 pt-1 text-center">
+      <div className="grid grid-cols-2 gap-4 pt-1 text-center">
         {/* Left: Input Staff */}
         <div className="space-y-10">
           <span className="text-muted-foreground block text-[9px] uppercase tracking-wide">Diterima Oleh (Received By):</span>
@@ -22,17 +22,6 @@ export function PrintReceiptSignature({ data }: Readonly<{ data: ReceiptData }>)
               {data.receivedBy}
             </div>
             <span className="text-[8px] text-muted-foreground block">Front Admin</span>
-          </div>
-        </div>
-
-        {/* Center: Stamp / Prepared placeholder */}
-        <div className="space-y-10">
-          <span className="text-muted-foreground block text-[9px] uppercase tracking-wide">Petugas (Prepared By):</span>
-          <div>
-            <div className="font-extrabold text-foreground border-b border-muted-foreground/30 pb-0.5 mx-4">
-              Yayasan Al-Hasyimi
-            </div>
-            <span className="text-[8px] text-muted-foreground block">Administrasi</span>
           </div>
         </div>
 
