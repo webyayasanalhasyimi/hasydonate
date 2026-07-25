@@ -95,7 +95,7 @@ export function AppSidebar({ profile }: AppSidebarProps) {
           </div>
           <div>
             <h2 className="text-base font-bold text-zinc-900 dark:text-white leading-none">
-              Hasy<span className="text-emerald-600 dark:text-emerald-400">Donate</span>
+              Al-Hasyimi<span className="text-emerald-600 dark:text-emerald-400"> Donate</span>
             </h2>
             <span className="text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block mt-0.5">
               Yayasan Al-Hasyimi
@@ -183,7 +183,7 @@ export function AppSidebar({ profile }: AppSidebarProps) {
           </button>
           <div className="flex items-center gap-2">
             <span className="text-lg font-bold text-zinc-900 dark:text-white">
-              Hasy<span className="text-emerald-600 dark:text-emerald-400">Donate</span>
+              Al-Hasyimi<span className="text-emerald-600 dark:text-emerald-400"> Donate</span>
             </span>
           </div>
         </div>
