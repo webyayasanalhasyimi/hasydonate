@@ -115,7 +115,11 @@ export function DonationDetailView({ donation }: DonationDetailViewProps) {
                 <InfoRow label="Tanggal Transaksi" value={formatDate(donation.donationDate)} />
                 <InfoRow label="Jenis Donasi" value={donation.donationType} />
                 <InfoRow label="Metode Pembayaran" value={donation.paymentMethod === "CASH" ? "Tunai" : "Transfer Bank"} />
-                <InfoRow label="Jumlah Donasi" value={formatIDR(donation.amount)} className="text-primary font-bold text-lg" />
+                <InfoRow
+                  label={donation.donationType === "BARANG" ? "Deskripsi Barang" : "Jumlah Donasi"}
+                  value={donation.donationType === "BARANG" ? (donation.itemDescription || "-") : formatIDR(donation.amount)}
+                  className={donation.donationType !== "BARANG" ? "text-primary font-bold text-lg" : "font-semibold text-foreground"}
+                />
                 <InfoRow label="Petugas Penerima" value={donation.receivedByName} />
                 <InfoRow label="Waktu Pencatatan" value={formatDate(donation.createdAt)} />
                 <InfoRow label="Catatan / Keterangan" value={donation.notes || "-"} />

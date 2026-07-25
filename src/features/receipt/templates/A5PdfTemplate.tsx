@@ -2,6 +2,7 @@ import React from "react";
 import { Document, Page, Text, View, StyleSheet, Image } from "../lib/react-pdf-shim";
 import { type ReceiptData } from "../types";
 import { formatIDR } from "@/lib/utils/currency";
+import { DONATION_TYPES } from "@/constants/donation-types";
 
 const styles = StyleSheet.create({
   page: {
@@ -452,14 +453,23 @@ export function A5PdfTemplate({ data }: Readonly<{ data: ReceiptData }>) {
 
           {/* Amount Box */}
           <View style={styles.amountBox}>
-            <View style={styles.amountSpelledContainer}>
-              <Text style={styles.amountSpelledLabel}>Terbilang (Spelled in Words):</Text>
-              <Text style={styles.amountSpelledText}>&ldquo; {data.amountSpelled} &rdquo;</Text>
-            </View>
-            <View style={styles.amountValueContainer}>
-              <Text style={styles.amountValueLabel}>Jumlah Donasi:</Text>
-              <Text style={styles.amountValueText}>{formatIDR(data.amount)}</Text>
-            </View>
+            {data.donationType === DONATION_TYPES.BARANG ? (
+              <View style={styles.amountSpelledContainer}>
+                <Text style={styles.amountSpelledLabel}>Deskripsi Barang:</Text>
+                <Text style={styles.amountSpelledText}>{data.itemDescription || "-"}</Text>
+              </View>
+            ) : (
+              <>
+                <View style={styles.amountSpelledContainer}>
+                  <Text style={styles.amountSpelledLabel}>Terbilang (Spelled in Words):</Text>
+                  <Text style={styles.amountSpelledText}>&ldquo; {data.amountSpelled} &rdquo;</Text>
+                </View>
+                <View style={styles.amountValueContainer}>
+                  <Text style={styles.amountValueLabel}>Jumlah Donasi:</Text>
+                  <Text style={styles.amountValueText}>{formatIDR(data.amount)}</Text>
+                </View>
+              </>
+            )}
           </View>
         </View>
 

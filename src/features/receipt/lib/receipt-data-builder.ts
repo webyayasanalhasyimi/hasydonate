@@ -53,6 +53,7 @@ export const buildReceiptData = (
     logoUrl,
     receivedBySignatureUrl,
     approvedBySignatureUrl,
+    itemDescription: donation.itemDescription,
   };
 
   if (donation.notes) {

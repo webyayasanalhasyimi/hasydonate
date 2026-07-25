@@ -24,6 +24,7 @@ function mapToDetailDto(donation: DonationWithRelations): DonationDetailDto {
     donationType: donation.donationType,
     paymentMethod: donation.paymentMethod,
     amount: Number(donation.amount),
+    itemDescription: donation.itemDescription,
     notes: donation.notes,
     transferProofPath: donation.transferProofPath,
     transferProofFilename: donation.transferProofFilename,
@@ -42,6 +43,7 @@ function mapToListItemDto(donation: DonationWithRelations): DonationListItemDto 
     donationType: donation.donationType,
     paymentMethod: donation.paymentMethod,
     amount: Number(donation.amount),
+    itemDescription: donation.itemDescription,
     donationDate: donation.donationDate,
     receivedByName: donation.receiver.fullName,
   };
@@ -94,6 +96,7 @@ export const DonationService = {
           donationType: data.donationType,
           paymentMethod: data.paymentMethod,
           amount: amountDecimal,
+          itemDescription: data.itemDescription || null,
           notes: data.notes || null,
           transferProofPath: data.transferProofPath || null,
           transferProofFilename: data.transferProofFilename || null,
@@ -271,6 +274,7 @@ export const DonationService = {
       ZAKAT: 0,
       SHADAQAH: 0,
       SUMBANGAN_LAIN: 0,
+      BARANG: 0,
     };
 
     for (const group of groups) {

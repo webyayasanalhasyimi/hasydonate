@@ -8,12 +8,15 @@ import { Button } from "@/components/ui/button";
 import { Icons } from "@/lib/icons";
 import { toast } from "sonner";
 
+import { DONATION_TYPES } from "@/constants/donation-types";
+
 export function DonationActions() {
   const {
     selectedDonor,
     donationType,
     paymentMethod,
     amount,
+    itemDescription,
     notes,
     transferProofPath,
     transferProofFilename,
@@ -35,6 +38,7 @@ export function DonationActions() {
       donationType,
       paymentMethod,
       amount,
+      itemDescription: itemDescription.trim() || undefined,
       notes: notes.trim() || undefined,
       transferProofPath: transferProofPath || undefined,
       transferProofFilename: transferProofFilename || undefined,
@@ -83,7 +87,7 @@ export function DonationActions() {
       <Button
         type="submit"
         onClick={handleSubmit}
-        disabled={isSubmitting || !selectedDonor || amount <= 0}
+        disabled={isSubmitting || !selectedDonor || (donationType === DONATION_TYPES.BARANG ? !itemDescription.trim() : amount <= 0)}
         className="w-2/3"
       >
         {isSubmitting ? (

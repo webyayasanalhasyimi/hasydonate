@@ -14,6 +14,8 @@ interface DonationPOSContextType {
   readonly setPaymentMethod: (method: PaymentMethod) => void;
   readonly amount: number;
   readonly setAmount: (amount: number) => void;
+  readonly itemDescription: string;
+  readonly setItemDescription: (description: string) => void;
   readonly notes: string;
   readonly setNotes: (notes: string) => void;
   readonly transferProofPath: string | null;
@@ -41,6 +43,7 @@ export function DonationPOSProvider({ children }: Readonly<{ children: React.Rea
   const [donationType, setDonationType] = useState<DonationType>("SHADAQAH");
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("CASH");
   const [amount, setAmount] = useState<number>(0);
+  const [itemDescription, setItemDescription] = useState<string>("");
   const [notes, setNotes] = useState<string>("");
   const [transferProofPath, setTransferProofPath] = useState<string | null>(null);
   const [transferProofFilename, setTransferProofFilename] = useState<string | null>(null);
@@ -54,6 +57,7 @@ export function DonationPOSProvider({ children }: Readonly<{ children: React.Rea
   const isDirty =
     !!selectedDonor ||
     amount > 0 ||
+    itemDescription.trim().length > 0 ||
     notes.trim().length > 0 ||
     !!transferProofPath;
 
@@ -76,6 +80,7 @@ export function DonationPOSProvider({ children }: Readonly<{ children: React.Rea
     setDonationType("SHADAQAH");
     setPaymentMethod("CASH");
     setAmount(0);
+    setItemDescription("");
     setNotes("");
     setTransferProofPath(null);
     setTransferProofFilename(null);
@@ -94,6 +99,8 @@ export function DonationPOSProvider({ children }: Readonly<{ children: React.Rea
         setPaymentMethod: handleSetPaymentMethod,
         amount,
         setAmount,
+        itemDescription,
+        setItemDescription,
         notes,
         setNotes,
         transferProofPath,

@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { formatWhatsAppNumber } from "@/lib/utils/phone";
 import { formatIDR } from "@/lib/utils/currency";
+import { DONATION_TYPES } from "@/constants/donation-types";
 
 interface ReceiptPreviewProps {
   readonly data: ReceiptData;
@@ -63,7 +64,7 @@ ${data.verificationUrl}
 • No. Kwitansi: _${data.receiptNumber}_
 • Tanggal: _${dateFormatted}_
 • Jenis Donasi: _${data.donationType}_
-• Jumlah: *${formatIDR(data.amount)}*
+• ${data.donationType === DONATION_TYPES.BARANG ? `Barang: _${data.itemDescription || "-"}_` : `Jumlah: *${formatIDR(data.amount)}*`}
 • Metode: _${data.paymentMethod === "CASH" ? "Tunai / Cash" : "Transfer Bank"}_
 ${data.notes ? `• Keterangan: _${data.notes}_\n` : ""}
 Semoga menjadi berkah dan amal jariyah.`;

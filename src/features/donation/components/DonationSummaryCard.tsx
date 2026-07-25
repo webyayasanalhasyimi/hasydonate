@@ -5,6 +5,7 @@ import { useDonationPOS } from "../context/donation-pos-context";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { formatIDR } from "@/lib/utils/index";
 import { Badge } from "@/components/ui/badge";
+import { DONATION_TYPES } from "@/constants/donation-types";
 
 export function DonationSummaryCard() {
   const {
@@ -12,8 +13,11 @@ export function DonationSummaryCard() {
     donationType,
     paymentMethod,
     amount,
+    itemDescription,
     transferProofPath,
   } = useDonationPOS();
+
+  const isBarang = donationType === DONATION_TYPES.BARANG;
 
   return (
     <Card className="border-primary/10 shadow-md h-full bg-muted/10">
@@ -66,8 +70,16 @@ export function DonationSummaryCard() {
         </div>
 
         <div className="pt-4 border-t border-dashed border-border flex flex-col gap-1">
-          <span className="text-xs text-muted-foreground font-medium">Total Donasi</span>
-          <span className="text-2xl font-black text-primary">{formatIDR(amount)}</span>
+          <span className="text-xs text-muted-foreground font-medium">
+            {isBarang ? "Deskripsi Barang" : "Total Donasi"}
+          </span>
+          {isBarang ? (
+            <span className="text-sm font-semibold text-foreground">
+              {itemDescription || "-"}
+            </span>
+          ) : (
+            <span className="text-2xl font-black text-primary">{formatIDR(amount)}</span>
+          )}
         </div>
       </CardContent>
     </Card>

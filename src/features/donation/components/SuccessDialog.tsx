@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { formatIDR, formatDate } from "@/lib/utils/index";
 import { Icons } from "@/lib/icons";
 import { DONATION_ROUTES } from "../config";
+import { DONATION_TYPES } from "@/constants/donation-types";
 
 export function SuccessDialog() {
   const { isSuccessOpen, setIsSuccessOpen, createdDonation, resetPOS } = useDonationPOS();
@@ -80,10 +81,18 @@ export function SuccessDialog() {
             </span>
           </div>
           <div className="pt-3 border-t border-dashed border-border flex justify-between items-center">
-            <span className="text-sm text-muted-foreground font-bold">Total Donasi</span>
-            <span className="text-xl font-black text-primary">
-              {formatIDR(createdDonation.amount)}
+            <span className="text-sm text-muted-foreground font-bold">
+              {createdDonation.donationType === DONATION_TYPES.BARANG ? "Deskripsi Barang" : "Total Donasi"}
             </span>
+            {createdDonation.donationType === DONATION_TYPES.BARANG ? (
+              <span className="text-sm font-semibold text-foreground text-right max-w-[60%]">
+                {createdDonation.itemDescription || "-"}
+              </span>
+            ) : (
+              <span className="text-xl font-black text-primary">
+                {formatIDR(createdDonation.amount)}
+              </span>
+            )}
           </div>
         </div>
 

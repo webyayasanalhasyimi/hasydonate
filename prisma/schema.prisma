@@ -17,6 +17,7 @@ enum DonationType {
   ZAKAT
   SHADAQAH
   SUMBANGAN_LAIN
+  BARANG
 
   @@map("donation_type")
 }
@@ -67,6 +68,7 @@ model Donation {
   donationType          DonationType  @map("donation_type")
   paymentMethod         PaymentMethod @map("payment_method")
   amount                Decimal       @db.Decimal(15, 2)
+  itemDescription       String?       @map("item_description") @db.Text
   notes                 String?       @db.Text
   transferProofPath     String?       @map("transfer_proof_path") @db.Text
   transferProofFilename String?       @map("transfer_proof_filename") @db.VarChar(255)

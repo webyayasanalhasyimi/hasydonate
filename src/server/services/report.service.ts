@@ -146,6 +146,7 @@ export const ReportService = {
       donationType: d.donationType,
       paymentMethod: d.paymentMethod,
       amount: Number(d.amount),
+      itemDescription: d.itemDescription,
       donationDate: d.donationDate,
       receivedByName: d.receiver.fullName,
     }));
@@ -180,6 +181,7 @@ export const ReportService = {
       donationType: d.donationType,
       paymentMethod: d.paymentMethod,
       amount: Number(d.amount),
+      itemDescription: d.itemDescription,
       donationDate: d.donationDate,
       receivedByName: d.receiver.fullName,
     }));

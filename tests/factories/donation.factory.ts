@@ -9,6 +9,7 @@ export const DonationFactory = {
       donationType: DonationType.SHADAQAH,
       paymentMethod: PaymentMethod.CASH,
       amount: new Prisma.Decimal(150000),
+      itemDescription: null,
       notes: "Donasi rutin untuk anak yatim",
       donationDate: new Date(),
       transferProofPath: null,

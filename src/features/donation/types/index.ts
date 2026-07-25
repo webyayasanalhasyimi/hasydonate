@@ -5,6 +5,7 @@ export interface DonationCreateDto {
   readonly donationType: DonationType;
   readonly paymentMethod: PaymentMethod;
   readonly amount: number;
+  readonly itemDescription?: string | undefined;
   readonly notes?: string | undefined;
   readonly transferProofPath?: string | undefined;
   readonly transferProofFilename?: string | undefined;
@@ -18,6 +19,7 @@ export interface DonationListItemDto {
   readonly donationType: DonationType;
   readonly paymentMethod: PaymentMethod;
   readonly amount: number;
+  readonly itemDescription: string | null;
   readonly donationDate: Date;
   readonly receivedByName: string;
 }
@@ -32,6 +34,7 @@ export interface DonationDetailDto {
   readonly donationType: DonationType;
   readonly paymentMethod: PaymentMethod;
   readonly amount: number;
+  readonly itemDescription: string | null;
   readonly notes: string | null;
   readonly transferProofPath: string | null;
   readonly transferProofFilename: string | null;

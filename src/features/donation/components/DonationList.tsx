@@ -109,7 +109,17 @@ export function DonationList() {
       id: "amount",
       header: "Jumlah",
       className: "text-right",
-      render: (row) => <span className="font-semibold text-primary">{formatIDR(row.amount)}</span>,
+      render: (row) => (
+        <span className="font-semibold text-primary">
+          {row.donationType === "BARANG" ? (
+            <span className="text-xs text-muted-foreground truncate block max-w-[150px]" title={row.itemDescription ?? ""}>
+              {row.itemDescription || "-"}
+            </span>
+          ) : (
+            formatIDR(row.amount)
+          )}
+        </span>
+      ),
     },
     {
       id: "receivedBy",

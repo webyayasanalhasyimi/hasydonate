@@ -13,13 +13,32 @@ export const createDonationSchema = z
     }),
     amount: z
       .number({ message: "Jumlah donasi harus berupa angka" })
-      .positive("Jumlah donasi harus lebih besar dari 0"),
+      .min(0, "Jumlah donasi tidak boleh negatif"),
+    itemDescription: z.string().optional(),
     notes: z.string().optional(),
     transferProofPath: z.string().optional(),
     transferProofFilename: z.string().optional(),
     donationDate: z.coerce.date().default(() => new Date()),
   })
   .superRefine((data, ctx) => {
+    if (data.donationType === DONATION_TYPES.BARANG) {
+      if (!data.itemDescription || data.itemDescription.trim().length === 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Deskripsi barang harus diisi untuk donasi barang",
+          path: ["itemDescription"],
+        });
+      }
+    } else {
+      if (data.amount <= 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Jumlah donasi harus lebih besar dari 0",
+          path: ["amount"],
+        });
+      }
+    }
+
     if (!data.transferProofPath || !data.transferProofFilename) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

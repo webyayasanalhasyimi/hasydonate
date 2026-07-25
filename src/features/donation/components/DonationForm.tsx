@@ -4,7 +4,6 @@ import React from "react";
 import { useDonationPOS } from "../context/donation-pos-context";
 import type { DonationType } from "@prisma/client";
 import { DONATION_TYPES } from "@/constants/donation-types";
-import { PAYMENT_METHODS } from "@/constants/payment-methods";
 import { CurrencyInput } from "./CurrencyInput";
 import { PaymentMethodSection } from "./PaymentMethodSection";
 import { TransferProofUpload } from "./TransferProofUpload";
@@ -24,10 +23,14 @@ export function DonationForm() {
     paymentMethod,
     amount,
     setAmount,
+    itemDescription,
+    setItemDescription,
     notes,
     setNotes,
     errors,
   } = useDonationPOS();
+
+  const isBarang = donationType === DONATION_TYPES.BARANG;
 
   return (
     <div className="space-y-4">
@@ -48,6 +51,7 @@ export function DonationForm() {
               <SelectItem value={DONATION_TYPES.SHADAQAH}>Shadaqah</SelectItem>
               <SelectItem value={DONATION_TYPES.ZAKAT}>Zakat</SelectItem>
               <SelectItem value={DONATION_TYPES.SUMBANGAN_LAIN}>Sumbangan Lain</SelectItem>
+              <SelectItem value={DONATION_TYPES.BARANG}>Barang</SelectItem>
             </SelectContent>
           </Select>
           {errors.donationType && (
@@ -55,23 +59,41 @@ export function DonationForm() {
           )}
         </div>
 
-        {/* Currency Amount Input */}
-        <div className="space-y-2">
-          <label className="text-sm font-semibold text-foreground">
-            Jumlah Donasi <span className="text-destructive">*</span>
-          </label>
-          <CurrencyInput value={amount} onChange={setAmount} />
-          {errors.amount && (
-            <span className="text-xs text-destructive font-medium">{errors.amount}</span>
-          )}
-        </div>
+        {/* Amount or Item Description */}
+        {isBarang ? (
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-foreground">
+              Deskripsi Barang <span className="text-destructive">*</span>
+            </label>
+            <Textarea
+              placeholder="Contoh: 10 kg beras, 5 dus air mineral..."
+              className="resize-none"
+              rows={3}
+              value={itemDescription}
+              onChange={(e) => setItemDescription(e.target.value)}
+            />
+            {errors.itemDescription && (
+              <span className="text-xs text-destructive font-medium">{errors.itemDescription}</span>
+            )}
+          </div>
+        ) : (
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-foreground">
+              Jumlah Donasi <span className="text-destructive">*</span>
+            </label>
+            <CurrencyInput value={amount} onChange={setAmount} />
+            {errors.amount && (
+              <span className="text-xs text-destructive font-medium">{errors.amount}</span>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Payment Method Selections */}
       <PaymentMethodSection />
 
       {/* Dynamic Transfer Proof Upload */}
-      {(paymentMethod === PAYMENT_METHODS.BANK_TRANSFER || paymentMethod === PAYMENT_METHODS.CASH) && <TransferProofUpload />}
+      {(paymentMethod === "BANK_TRANSFER" || paymentMethod === "CASH") && <TransferProofUpload />}
 
       {/* Notes Textarea */}
       <div className="space-y-2">
