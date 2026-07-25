@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { type ReceiptData } from "../types";
 import { PrintReceiptView, printReceipt } from "../renderers/print-renderer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -19,6 +19,12 @@ interface ReceiptPreviewProps {
 export function ReceiptPreview({ data }: ReceiptPreviewProps) {
   const router = useRouter();
   const [isDownloading, setIsDownloading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   const handleDownload = async () => {
     try {
@@ -76,6 +82,14 @@ Semoga menjadi berkah dan amal jariyah.`;
       toast.error("Gagal membagikan ke WhatsApp");
     }
   };
+
+  if (!mounted) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Icons.Spinner className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
