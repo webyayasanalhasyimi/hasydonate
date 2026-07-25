@@ -30,10 +30,11 @@ export function PrintStyles() {
           left: 0 !important;
           top: 0 !important;
           width: 148mm !important;
-          height: auto !important;
-          min-height: 210mm !important;
+          height: 210mm !important;
+          box-sizing: border-box !important;
+          overflow: hidden !important;
           margin: 0 !important;
-          padding: 10mm !important;
+          padding: 8mm !important;
           border: none !important;
           box-shadow: none !important;
           background: white !important;
