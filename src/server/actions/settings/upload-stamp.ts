@@ -30,7 +30,7 @@ export const uploadStampAction = async (formData: FormData): Promise<Result<stri
     }
 
     const bucket = "foundation-assets";
-    const path = `stamp/${crypto.randomUUID()}.${ext}`;
+    const path = `logo/stamp-${crypto.randomUUID()}.${ext}`;
 
     const buffer = Buffer.from(await file.arrayBuffer());
     const uploadedPath = await uploadFile(bucket, path, buffer, file.type);

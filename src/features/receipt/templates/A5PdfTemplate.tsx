@@ -520,9 +520,23 @@ export function A5PdfTemplate({ data }: Readonly<{ data: ReceiptData }>) {
             </View>
           </View>
 
-          {/* Footer Thank You */}
+          {/* Footer Thank You & Verification */}
           <View style={styles.footer}>
             <Text style={styles.thankYouText}>{data.thankYouMessage}</Text>
+            <View style={styles.securityDetails}>
+              <View style={styles.securityInfo}>
+                <Text>
+                  Tautan Kwitansi: <Text style={styles.securityBold}>{data.verificationUrl}</Text>
+                </Text>
+              </View>
+              <View style={styles.qrContainer}>
+                <Image
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(data.verificationUrl ?? "")}`}
+                  style={styles.qrPlaceholder}
+                />
+                <Text style={styles.qrLabel}>Scan untuk{"\n"}Lihat Kwitansi</Text>
+              </View>
+            </View>
           </View>
         </View>
       </Page>
