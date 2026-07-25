@@ -22,7 +22,7 @@ export function PrintReceiptFooter({ data }: Readonly<{ data: ReceiptData }>) {
         {data.verificationUrl && (
           <div className="flex items-center gap-2 border border-border rounded p-1 bg-white shrink-0">
             <img
-              src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(data.verificationUrl)}`}
+              src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(data.verificationUrl ?? "")}`}
               alt="QR Code"
               className="h-8 w-8 object-contain"
             />
