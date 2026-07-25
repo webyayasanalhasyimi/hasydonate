@@ -6,7 +6,7 @@ test.describe("HasyDonate E2E User Journeys", () => {
 
     // Semantic assertions on forms elements
     const heading = page.locator("h1");
-    await expect(heading).toContainText("HasyDonate");
+    await expect(heading).toContainText("Al-Hasyimi Donate");
 
     const emailInput = page.locator('input[type="email"]');
     await expect(emailInput).toBeVisible();

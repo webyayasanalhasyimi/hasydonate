@@ -20,12 +20,8 @@ export const generateReceiptAction = async (donationId: string): Promise<Result<
     }
 
     // Business validation (06-receipt.md section Validation)
-    if (!donation.transferProofPath) {
-      const errorMsg =
-        donation.paymentMethod === PaymentMethod.BANK_TRANSFER
-          ? "Transfer proof is required before generating the receipt."
-          : "Payment proof is required before generating the receipt.";
-      return failure(new Error(errorMsg));
+    if (donation.paymentMethod === PaymentMethod.BANK_TRANSFER && !donation.transferProofPath) {
+      return failure(new Error("Transfer proof is required before generating the receipt."));
     }
 
     const settings = await SettingService.getAll();
