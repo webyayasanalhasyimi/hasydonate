@@ -2,6 +2,7 @@ import { type DonationDetailDto } from "@/features/donation/types";
 import { type ReceiptData } from "../types";
 import { RECEIPT_SETTINGS_KEYS, RECEIPT_SETTINGS_DEFAULTS } from "../config";
 import { spellNumberIndonesian } from "@/lib/utils/currency";
+import { env } from "@/lib/env";
 
 export const buildReceiptData = (
   donation: DonationDetailDto,
@@ -46,7 +47,7 @@ export const buildReceiptData = (
 
     // Placeholders
     verificationCode: `VERIFY-${donation.donationNumber.split("-").pop()}`,
-    verificationUrl: `https://hasydonate.or.id/verify/${donation.id}`,
+    verificationUrl: `${env.NEXT_PUBLIC_APP_URL}/receipts/${donation.id}`,
     qrPlaceholderUrl: "/placeholder-qr.png",
     statusLabel: "LUNAS",
     watermarkText: "YAYASAN AL-HASYIMI",
