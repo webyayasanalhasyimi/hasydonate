@@ -19,16 +19,18 @@ export function PrintReceiptFooter({ data }: Readonly<{ data: ReceiptData }>) {
             Tautan Verifikasi: <a href={data.verificationUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline font-mono truncate block max-w-[250px]">{data.verificationUrl}</a>
           </div>
         </div>
-        <div className="flex items-center gap-2 border border-border rounded p-1 bg-white shrink-0">
-          <img
-            src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(data.verificationUrl)}`}
-            alt="QR Code"
-            className="h-8 w-8 object-contain"
-          />
-          <div className="text-[7px] leading-tight text-muted-foreground">
-            Scan untuk<br />Verifikasi
+        {data.verificationUrl && (
+          <div className="flex items-center gap-2 border border-border rounded p-1 bg-white shrink-0">
+            <img
+              src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(data.verificationUrl)}`}
+              alt="QR Code"
+              className="h-8 w-8 object-contain"
+            />
+            <div className="text-[7px] leading-tight text-muted-foreground">
+              Scan untuk<br />Verifikasi
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
