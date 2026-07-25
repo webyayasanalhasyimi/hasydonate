@@ -21,3 +21,7 @@ export const StyleSheet: any = getProp(realPdf, "StyleSheet") || {
 export const pdf: any = getProp(realPdf, "pdf") || (() => ({
   toBlob: async () => new Blob(["Mock PDF Content"], { type: "application/pdf" }),
 }));
+
+export const Font: any = getProp(realPdf, "Font") || {
+  register: () => {},
+};

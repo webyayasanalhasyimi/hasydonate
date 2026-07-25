@@ -1,13 +1,28 @@
 import React from "react";
-import { Document, Page, Text, View, StyleSheet, Image } from "../lib/react-pdf-shim";
+import { Document, Page, Text, View, StyleSheet, Image, Font } from "@/features/receipt/lib/react-pdf-shim";
 import { type ReceiptData } from "../types";
+
+// Register custom Google Font to match web design typography
+Font.register({
+  family: "Inter",
+  fonts: [
+    {
+      src: "https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_fvQtMwCp5GP3JTkwlS8kn51vg.ttf",
+      fontWeight: "normal",
+    },
+    {
+      src: "https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_fvQtMwCp5GP8ZHkwlS8kn51vg.ttf",
+      fontWeight: "bold",
+    },
+  ],
+});
 import { formatIDR } from "@/lib/utils/currency";
 import { DONATION_TYPES } from "@/constants/donation-types";
 
 const styles = StyleSheet.create({
   page: {
     padding: 30,
-    fontFamily: "Helvetica",
+    fontFamily: "Inter",
     fontSize: 9,
     color: "#1f2937",
     display: "flex",
@@ -353,6 +368,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   securityInfo: {
+    width: "70%",
     fontSize: 7,
     color: "#6b7280",
     lineHeight: 1.3,
@@ -362,22 +378,21 @@ const styles = StyleSheet.create({
     color: "#374151",
   },
   qrContainer: {
+    width: "26%",
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "flex-end",
     borderWidth: 0.5,
     borderColor: "#d1d5db",
     borderRadius: 3,
     padding: 3,
     backgroundColor: "#ffffff",
+    gap: 4,
   },
   qrPlaceholder: {
     width: 24,
     height: 24,
-    borderWidth: 0.5,
-    borderColor: "#9ca3af",
-    backgroundColor: "#f3f4f6",
-    justifyContent: "center",
-    alignItems: "center",
+    objectFit: "contain",
   },
   qrText: {
     fontSize: 5,
@@ -386,7 +401,7 @@ const styles = StyleSheet.create({
   qrLabel: {
     fontSize: 6,
     color: "#6b7280",
-    marginLeft: 4,
+    marginLeft: 2,
     lineHeight: 1.1,
   },
 });
