@@ -10,7 +10,7 @@ export function PrintReceiptFooter({ data }: Readonly<{ data: ReceiptData }>) {
       </p>
 
       {/* Security placeholders & QR */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-3 pt-1 border-t border-border/50 text-left">
+      <div className="flex flex-col print:flex-row items-center justify-between gap-3 pt-1 border-t border-border/50 text-left">
         <div className="space-y-0.5">
           <div>
             Tautan Kwitansi: <a href={data.verificationUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline font-mono break-all">{data.verificationUrl}</a>

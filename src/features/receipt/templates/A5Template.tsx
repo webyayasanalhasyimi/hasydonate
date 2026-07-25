@@ -18,7 +18,6 @@ export const A5Template: ReceiptTemplate = {
       <div 
         id="receipt-print-area" 
         className="w-full max-w-[148mm] min-h-[210mm] bg-white p-[10mm] shadow-none border-0 box-border flex flex-col justify-between gap-4 font-sans select-text relative"
-        style={{ contentVisibility: "auto" }}
       >
         {/* Future Watermark Support */}
         {data.watermarkText && (
