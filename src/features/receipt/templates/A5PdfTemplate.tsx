@@ -505,9 +505,10 @@ export function A5PdfTemplate({ data }: Readonly<{ data: ReceiptData }>) {
                 </Text>
               </View>
               <View style={styles.qrContainer}>
-                <View style={styles.qrPlaceholder}>
-                  <Text style={styles.qrText}>[ QR ]</Text>
-                </View>
+                <Image
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(data.verificationUrl)}`}
+                  style={styles.qrPlaceholder}
+                />
                 <Text style={styles.qrLabel}>Scan untuk{"\n"}Verifikasi</Text>
               </View>
             </View>

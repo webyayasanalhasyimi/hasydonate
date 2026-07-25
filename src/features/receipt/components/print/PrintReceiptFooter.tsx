@@ -20,10 +20,11 @@ export function PrintReceiptFooter({ data }: Readonly<{ data: ReceiptData }>) {
           </div>
         </div>
         <div className="flex items-center gap-2 border border-border rounded p-1 bg-white shrink-0">
-          {/* QR Code Placeholder */}
-          <div className="h-8 w-8 bg-muted/30 border border-muted-foreground/30 flex items-center justify-center font-mono text-[7px] text-muted-foreground">
-            [ QR ]
-          </div>
+          <img
+            src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(data.verificationUrl)}`}
+            alt="QR Code"
+            className="h-8 w-8 object-contain"
+          />
           <div className="text-[7px] leading-tight text-muted-foreground">
             Scan untuk<br />Verifikasi
           </div>
