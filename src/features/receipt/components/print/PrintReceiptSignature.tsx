@@ -36,20 +36,31 @@ export function PrintReceiptSignature({ data }: Readonly<{ data: ReceiptData }>)
         {/* Right: Authorizer / Approved By (from Settings) */}
         <div className="flex flex-col justify-between h-20">
           <span className="text-muted-foreground block text-[9px] uppercase tracking-wide">Mengetahui (Approved By):</span>
-          <div className="flex items-center justify-center gap-4 flex-1 h-10 my-1 relative">
-            {data.approvedByStampUrl && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={data.approvedByStampUrl}
-                alt="Stamp"
-                className="h-10 w-10 object-contain opacity-80"
-              />
-            )}
+          <div className="relative flex flex-col items-center justify-center flex-1 h-10 my-1">
             {data.approvedBySignatureUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={data.approvedBySignatureUrl} alt="Signature" className="h-8 object-contain" />
+              <div className="relative inline-block">
+                {data.approvedByStampUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={data.approvedByStampUrl}
+                    alt="Stamp"
+                    className="absolute -left-10 -top-3 h-16 w-16 object-contain opacity-80 pointer-events-none z-10"
+                  />
+                )}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={data.approvedBySignatureUrl} alt="Signature" className="h-10 object-contain relative z-0" />
+              </div>
             ) : (
-              <div className="h-8" />
+              data.approvedByStampUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={data.approvedByStampUrl}
+                  alt="Stamp"
+                  className="h-16 w-16 object-contain opacity-80 pointer-events-none"
+                />
+              ) : (
+                <div className="h-10" />
+              )
             )}
           </div>
           <div>

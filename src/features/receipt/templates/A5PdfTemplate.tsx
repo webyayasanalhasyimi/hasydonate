@@ -289,16 +289,30 @@ const styles = StyleSheet.create({
     height: 32,
   },
   approvedByContainer: {
-    height: 32,
+    height: 36,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
   },
-  stampImage: {
-    width: 32,
+  signatureWrapper: {
+    position: "relative",
     height: 32,
+    width: 80,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  stampImage: {
+    position: "absolute",
+    left: -24,
+    top: -12,
+    width: 48,
+    height: 48,
+    opacity: 0.8,
+  },
+  stampFallbackImage: {
+    width: 44,
+    height: 44,
     objectFit: "contain",
-    marginRight: 8,
     opacity: 0.8,
   },
   signatureName: {
@@ -505,13 +519,19 @@ export function A5PdfTemplate({ data }: Readonly<{ data: ReceiptData }>) {
               <View style={styles.signatureCol}>
                 <Text style={styles.signatureLabel}>Mengetahui:</Text>
                 <View style={styles.approvedByContainer}>
-                  {data.approvedByStampUrl && (
-                    <Image src={data.approvedByStampUrl} style={styles.stampImage} />
-                  )}
                   {data.approvedBySignatureUrl ? (
-                    <Image src={data.approvedBySignatureUrl} style={styles.signatureImage} />
+                    <View style={styles.signatureWrapper}>
+                      {data.approvedByStampUrl && (
+                        <Image src={data.approvedByStampUrl} style={styles.stampImage} />
+                      )}
+                      <Image src={data.approvedBySignatureUrl} style={styles.signatureImage} />
+                    </View>
                   ) : (
-                    <View style={styles.signatureImagePlaceholder} />
+                    data.approvedByStampUrl ? (
+                      <Image src={data.approvedByStampUrl} style={styles.stampFallbackImage} />
+                    ) : (
+                      <View style={styles.signatureImagePlaceholder} />
+                    )
                   )}
                 </View>
                 <Text style={styles.signatureName}>{data.signatureName}</Text>
