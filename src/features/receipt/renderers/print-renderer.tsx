@@ -26,11 +26,12 @@ export function PrintStyles() {
           visibility: visible !important;
         }
         #receipt-print-area {
-          position: fixed !important;
+          position: absolute !important;
           left: 0 !important;
           top: 0 !important;
           width: 148mm !important;
-          height: 210mm !important;
+          height: auto !important;
+          min-height: 210mm !important;
           margin: 0 !important;
           padding: 10mm !important;
           border: none !important;

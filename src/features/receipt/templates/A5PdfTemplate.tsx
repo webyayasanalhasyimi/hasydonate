@@ -289,18 +289,16 @@ const styles = StyleSheet.create({
     height: 32,
   },
   approvedByContainer: {
-    position: "relative",
     height: 32,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
   },
   stampImage: {
-    position: "absolute",
-    left: 20,
-    top: -4,
-    width: 36,
-    height: 36,
+    width: 32,
+    height: 32,
+    objectFit: "contain",
+    marginRight: 8,
     opacity: 0.8,
   },
   signatureName: {
@@ -522,26 +520,9 @@ export function A5PdfTemplate({ data }: Readonly<{ data: ReceiptData }>) {
             </View>
           </View>
 
-          {/* Footer Thank You & Verification */}
+          {/* Footer Thank You */}
           <View style={styles.footer}>
             <Text style={styles.thankYouText}>{data.thankYouMessage}</Text>
-            <View style={styles.securityDetails}>
-              <View style={styles.securityInfo}>
-                <Text>
-                  Kode Verifikasi: <Text style={styles.securityBold}>{data.verificationCode}</Text>
-                </Text>
-                <Text>
-                  Tautan Verifikasi: <Text style={styles.securityBold}>{data.verificationUrl}</Text>
-                </Text>
-              </View>
-              <View style={styles.qrContainer}>
-                <Image
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(data.verificationUrl ?? "")}`}
-                  style={styles.qrPlaceholder}
-                />
-                <Text style={styles.qrLabel}>Scan untuk{"\n"}Verifikasi</Text>
-              </View>
-            </View>
           </View>
         </View>
       </Page>
