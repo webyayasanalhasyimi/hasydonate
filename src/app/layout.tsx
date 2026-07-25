@@ -4,7 +4,7 @@ import "./globals.css";
 import { AppProvider } from "@/providers/AppProvider";
 
 export const metadata: Metadata = {
-  title: "HasyDonate - Donation Management System",
+  title: "Al-Hasyimi Donate - Donation Management System",
   description: "Internal Donation Management Information System for Yayasan Panti Asuhan Al-Hasyimi",
 };
 

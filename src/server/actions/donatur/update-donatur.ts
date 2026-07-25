@@ -29,9 +29,11 @@ export const updateDonaturAction = async (
     }
 
     // Check duplicate phone number for other donors
-    const existingPhone = await DonorService.findByPhone(parsedInput.data.phoneNumber);
-    if (existingPhone && existingPhone.id !== id) {
-      throw new ConflictError("Nomor WhatsApp sudah terdaftar pada donatur lain");
+    if (parsedInput.data.phoneNumber) {
+      const existingPhone = await DonorService.findByPhone(parsedInput.data.phoneNumber);
+      if (existingPhone && existingPhone.id !== id) {
+        throw new ConflictError("Nomor WhatsApp sudah terdaftar pada donatur lain");
+      }
     }
 
     const updatedDonor = await DonorService.update(id, parsedInput.data, session.user.id);

@@ -33,14 +33,14 @@ export function DonaturForm({
         <TextField
           control={form.control}
           name="phoneNumber"
-          label="Nomor WhatsApp"
+          label="Nomor WhatsApp (Opsional)"
           placeholder="Contoh: 081234567890"
           disabled={isLoading}
         />
         <TextareaField
           control={form.control}
           name="address"
-          label="Alamat"
+          label="Alamat (Opsional)"
           placeholder="Masukkan alamat lengkap donatur"
           disabled={isLoading}
           rows={4}

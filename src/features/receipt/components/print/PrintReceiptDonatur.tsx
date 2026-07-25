@@ -9,13 +9,13 @@ export function PrintReceiptDonatur({ data }: Readonly<{ data: ReceiptData }>) {
       </div>
       <div className="grid grid-cols-3 gap-2">
         <div className="text-muted-foreground font-medium">Nama Donatur</div>
-        <div className="col-span-2 font-bold text-foreground truncate">{data.donorName}</div>
+        <div className="col-span-2 font-bold text-foreground truncate">{data.donorName || "-"}</div>
 
         <div className="text-muted-foreground font-medium">No. WhatsApp</div>
-        <div className="col-span-2 text-foreground">{data.donorPhone}</div>
+        <div className="col-span-2 text-foreground">{data.donorPhone || "-"}</div>
 
         <div className="text-muted-foreground font-medium">Alamat</div>
-        <div className="col-span-2 text-foreground truncate">{data.donorAddress}</div>
+        <div className="col-span-2 text-foreground truncate">{data.donorAddress || "-"}</div>
       </div>
     </div>
   );

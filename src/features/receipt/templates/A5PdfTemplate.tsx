@@ -410,11 +410,11 @@ export function A5PdfTemplate({ data }: Readonly<{ data: ReceiptData }>) {
             </View>
             <View style={styles.gridRow}>
               <Text style={styles.gridLabel}>No. WhatsApp</Text>
-              <Text style={styles.gridValue}>{data.donorPhone}</Text>
+              <Text style={styles.gridValue}>{data.donorPhone || "-"}</Text>
             </View>
             <View style={styles.gridRow}>
               <Text style={styles.gridLabel}>Alamat</Text>
-              <Text style={styles.gridValue}>{data.donorAddress}</Text>
+              <Text style={styles.gridValue}>{data.donorAddress || "-"}</Text>
             </View>
           </View>
 

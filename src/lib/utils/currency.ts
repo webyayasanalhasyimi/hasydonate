@@ -16,27 +16,38 @@ export const spellNumberIndonesian = (num: number): string => {
   
   if (num === 0) return "Nol";
   
-  let result = "";
-  if (num < 12) {
-    result = units[num] || "";
-  } else if (num < 20) {
-    result = spellNumberIndonesian(num - 10) + " Belas";
-  } else if (num < 100) {
-    result = spellNumberIndonesian(Math.floor(num / 10)) + " Puluh " + spellNumberIndonesian(num % 10);
-  } else if (num < 200) {
-    result = "Seratus " + spellNumberIndonesian(num - 100);
-  } else if (num < 1000) {
-    result = spellNumberIndonesian(Math.floor(num / 100)) + " Ratus " + spellNumberIndonesian(num % 100);
-  } else if (num < 2000) {
-    result = "Seribu " + spellNumberIndonesian(num - 1000);
-  } else if (num < 1000000) {
-    result = spellNumberIndonesian(Math.floor(num / 1000)) + " Ribu " + spellNumberIndonesian(num % 1000);
-  } else if (num < 1000000000) {
-    result = spellNumberIndonesian(Math.floor(num / 1000000)) + " Juta " + spellNumberIndonesian(num % 1000000);
-  } else {
-    result = String(num);
-  }
+  const spell = (n: number): string => {
+    if (n < 12) {
+      return units[n] || "";
+    } else if (n < 20) {
+      return spell(n - 10) + " Belas";
+    } else if (n < 100) {
+      const remainder = n % 10;
+      return (spell(Math.floor(n / 10)) + " Puluh " + (remainder ? spell(remainder) : "")).trim();
+    } else if (n < 200) {
+      const remainder = n - 100;
+      return ("Seratus " + (remainder ? spell(remainder) : "")).trim();
+    } else if (n < 1000) {
+      const remainder = n % 100;
+      return (spell(Math.floor(n / 100)) + " Ratus " + (remainder ? spell(remainder) : "")).trim();
+    } else if (n < 2000) {
+      const remainder = n - 1000;
+      return ("Seribu " + (remainder ? spell(remainder) : "")).trim();
+    } else if (n < 1000000) {
+      const remainder = n % 1000;
+      return (spell(Math.floor(n / 1000)) + " Ribu " + (remainder ? spell(remainder) : "")).trim();
+    } else if (n < 1000000000) {
+      const remainder = n % 1000000;
+      return (spell(Math.floor(n / 1000000)) + " Juta " + (remainder ? spell(remainder) : "")).trim();
+    } else if (n < 1000000000000) {
+      const remainder = n % 1000000000;
+      return (spell(Math.floor(n / 1000000000)) + " Miliar " + (remainder ? spell(remainder) : "")).trim();
+    } else {
+      const remainder = n % 1000000000000;
+      return (spell(Math.floor(n / 1000000000000)) + " Triliun " + (remainder ? spell(remainder) : "")).trim();
+    }
+  };
   
-  return result.trim().replace(/\s+/g, " ") + " Rupiah";
+  return spell(num).trim().replace(/\s+/g, " ") + " Rupiah";
 };
 

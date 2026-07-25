@@ -20,9 +20,11 @@ export const createDonaturAction = async (input: CreateDonorInput): Promise<Resu
     }
 
     // Check duplicate phone number
-    const existing = await DonorService.findByPhone(parsedInput.data.phoneNumber);
-    if (existing) {
-      throw new ConflictError("Nomor WhatsApp sudah terdaftar");
+    if (parsedInput.data.phoneNumber) {
+      const existing = await DonorService.findByPhone(parsedInput.data.phoneNumber);
+      if (existing) {
+        throw new ConflictError("Nomor WhatsApp sudah terdaftar");
+      }
     }
 
     const newDonor = await DonorService.create(parsedInput.data, session.user.id);

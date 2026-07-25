@@ -39,7 +39,7 @@ export function LoginForm() {
   return (
     <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
       <div className="flex flex-col items-center space-y-2">
-        <h1 className="text-2xl font-bold text-gray-900">HasyDonate</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Al-Hasyimi Donate</h1>
         <p className="text-sm text-gray-500">Welcome Back</p>
       </div>
 

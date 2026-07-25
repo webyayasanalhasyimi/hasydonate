@@ -49,7 +49,8 @@ export const DonorService = {
     };
   },
 
-  findByPhone(phoneNumber: string): Promise<Donor | null> {
+  findByPhone(phoneNumber: string | null | undefined): Promise<Donor | null> {
+    if (!phoneNumber) return Promise.resolve(null);
     return prisma.donor.findFirst({
       where: { phoneNumber, deletedAt: null },
     });
@@ -57,7 +58,13 @@ export const DonorService = {
 
   async create(data: CreateDonorInput, userId: string): Promise<Donor> {
     return prisma.$transaction(async (tx) => {
-      const newDonor = await tx.donor.create({ data });
+      const newDonor = await tx.donor.create({
+        data: {
+          fullName: data.fullName,
+          phoneNumber: data.phoneNumber || "",
+          address: data.address || "",
+        },
+      });
       await tx.auditLog.create({
         data: {
           userId,
@@ -81,7 +88,11 @@ export const DonorService = {
 
       const newDonor = await tx.donor.update({
         where: { id },
-        data,
+        data: {
+          fullName: data.fullName,
+          phoneNumber: data.phoneNumber || "",
+          address: data.address || "",
+        },
       });
 
       await tx.auditLog.create({
