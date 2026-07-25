@@ -38,6 +38,7 @@ export interface ReceiptData {
   readonly receivedBySignatureUrl?: string | undefined;
   readonly approvedBySignatureUrl?: string | undefined;
   readonly approvedByStampUrl?: string | undefined;
+  readonly qrCodeDataUrl?: string | undefined;
 
   // Item description for BARANG donations
   readonly itemDescription?: string | null;

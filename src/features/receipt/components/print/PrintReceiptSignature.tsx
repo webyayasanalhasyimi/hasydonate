@@ -44,7 +44,7 @@ export function PrintReceiptSignature({ data }: Readonly<{ data: ReceiptData }>)
                   <img
                     src={data.approvedByStampUrl}
                     alt="Stamp"
-                    className="absolute -left-10 -top-3 h-16 w-16 object-contain opacity-80 pointer-events-none z-10"
+                    className="absolute -left-7 -top-3 h-16 w-16 object-contain opacity-80 pointer-events-none z-10"
                   />
                 )}
                 {/* eslint-disable-next-line @next/next/no-img-element */}

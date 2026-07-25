@@ -9,6 +9,7 @@ import { type Result } from "@/types/action";
 import { success, failure } from "../action-result";
 import { PaymentMethod } from "@prisma/client";
 import { getSignedUrl } from "@/lib/storage/signed-url";
+import QRCode from "qrcode";
 
 export const generateReceiptAction = async (donationId: string): Promise<Result<ReceiptData>> => {
   try {
@@ -90,7 +91,22 @@ export const generateReceiptAction = async (donationId: string): Promise<Result<
       approvedByStampUrl
     );
 
-    return success(receiptData);
+    let qrCodeDataUrl: string | undefined = undefined;
+    if (receiptData.verificationUrl) {
+      try {
+        qrCodeDataUrl = await QRCode.toDataURL(receiptData.verificationUrl, {
+          margin: 1,
+          width: 150,
+        });
+      } catch {
+        // Silent catch
+      }
+    }
+
+    return success({
+      ...receiptData,
+      qrCodeDataUrl,
+    });
   } catch (err) {
     return failure(err);
   }
@@ -177,7 +193,22 @@ export const getPublicReceiptAction = async (donationIdOrNumber: string): Promis
       approvedByStampUrl
     );
 
-    return success(receiptData);
+    let qrCodeDataUrl: string | undefined = undefined;
+    if (receiptData.verificationUrl) {
+      try {
+        qrCodeDataUrl = await QRCode.toDataURL(receiptData.verificationUrl, {
+          margin: 1,
+          width: 150,
+        });
+      } catch {
+        // Silent catch
+      }
+    }
+
+    return success({
+      ...receiptData,
+      qrCodeDataUrl,
+    });
   } catch (err) {
     return failure(err);
   }

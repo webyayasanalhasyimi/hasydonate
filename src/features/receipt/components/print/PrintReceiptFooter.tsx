@@ -16,10 +16,11 @@ export function PrintReceiptFooter({ data }: Readonly<{ data: ReceiptData }>) {
             Tautan Kwitansi: <a href={data.verificationUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline font-mono break-all">{data.verificationUrl}</a>
           </div>
         </div>
-        {data.verificationUrl && (
+        {data.qrCodeDataUrl && (
           <div className="flex items-center gap-2 border border-border rounded p-1 bg-white shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={`https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=${encodeURIComponent(data.verificationUrl ?? "")}`}
+              src={data.qrCodeDataUrl}
               alt="QR Code"
               className="h-8 w-8 object-contain"
             />

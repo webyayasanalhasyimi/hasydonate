@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
   },
   stampImage: {
     position: "absolute",
-    left: -24,
+    left: -16,
     top: -12,
     width: 48,
     height: 48,
@@ -550,10 +550,12 @@ export function A5PdfTemplate({ data }: Readonly<{ data: ReceiptData }>) {
                 </Text>
               </View>
               <View style={styles.qrContainer}>
-                <Image
-                  src={`https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=${encodeURIComponent(data.verificationUrl ?? "")}`}
-                  style={styles.qrPlaceholder}
-                />
+                {data.qrCodeDataUrl && (
+                  <Image
+                    src={data.qrCodeDataUrl}
+                    style={styles.qrPlaceholder}
+                  />
+                )}
                 <Text style={styles.qrLabel}>Scan untuk{"\n"}Lihat Kwitansi</Text>
               </View>
             </View>
