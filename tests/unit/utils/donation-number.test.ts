@@ -13,14 +13,14 @@ describe("generateDonationNumber", () => {
     const date = new Date("2026-07-23T12:00:00+07:00");
     const result = await generateDonationNumber(mockTx, date);
     
-    expect(result).toBe("AH-DON-20260723-0001");
+    expect(result).toBe("AH-DON-20262307-0001");
   });
 
   it("increments sequential number based on latest donation prefix match", async () => {
     const mockTx = {
       donation: {
         findFirst: vi.fn().mockResolvedValue({
-          donationNumber: "AH-DON-20260723-0027",
+          donationNumber: "AH-DON-20262307-0027",
         }),
       },
     } as unknown as Prisma.TransactionClient;
@@ -28,6 +28,6 @@ describe("generateDonationNumber", () => {
     const date = new Date("2026-07-23T12:00:00+07:00");
     const result = await generateDonationNumber(mockTx, date);
     
-    expect(result).toBe("AH-DON-20260723-0028");
+    expect(result).toBe("AH-DON-20262307-0028");
   });
 });

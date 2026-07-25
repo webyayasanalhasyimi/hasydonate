@@ -18,7 +18,7 @@ export async function generateDonationNumber(
   const year = parts.find((p) => p.type === "year")?.value || "";
   const month = parts.find((p) => p.type === "month")?.value || "";
   const day = parts.find((p) => p.type === "day")?.value || "";
-  const dateStr = `${year}${month}${day}`;
+  const dateStr = `${year}${day}${month}`;
 
   const prefix = `AH-DON-${dateStr}-`;
 
