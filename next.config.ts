@@ -23,14 +23,15 @@ const nextConfig: NextConfig = {
     const cspHeader = `
       default-src 'self';
       script-src 'self' 'unsafe-inline' 'unsafe-eval';
+      worker-src 'self' blob:;
       style-src 'self' 'unsafe-inline';
-      img-src 'self' blob: data: https://*.supabase.co;
+      img-src 'self' blob: data: https://*.supabase.co https://chart.googleapis.com https://api.qrserver.com;
       font-src 'self' data:;
       object-src 'none';
       base-uri 'self';
       form-action 'self';
       frame-ancestors 'none';
-      connect-src 'self' https://*.supabase.co wss://*.supabase.co;
+      connect-src 'self' data: blob: https://*.supabase.co wss://*.supabase.co https://chart.googleapis.com https://api.qrserver.com;
       upgrade-insecure-requests;
     `.replace(/\s{2,}/g, " ").trim();
 
