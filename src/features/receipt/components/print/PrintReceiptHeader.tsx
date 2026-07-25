@@ -7,7 +7,7 @@ export function PrintReceiptHeader({ data }: Readonly<{ data: ReceiptData }>) {
       <div className="flex items-center gap-3">
         {data.logoUrl && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={data.logoUrl} alt="Logo" className="h-10 w-10 object-contain shrink-0" />
+          <img src={data.logoUrl} alt="Logo" className="h-14 w-14 object-contain shrink-0" />
         )}
         <div className="space-y-1">
           <h2 className="text-lg font-black tracking-tight text-primary leading-none uppercase">

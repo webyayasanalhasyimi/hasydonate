@@ -32,8 +32,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logoImage: {
-    width: 28,
-    height: 28,
+    width: 40,
+    height: 40,
     marginRight: 6,
   },
   headerTitle: {
