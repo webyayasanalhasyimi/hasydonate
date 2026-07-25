@@ -94,12 +94,13 @@ export const generateReceiptAction = async (donationId: string): Promise<Result<
     let qrCodeDataUrl: string | undefined = undefined;
     if (receiptData.verificationUrl) {
       try {
-        qrCodeDataUrl = await QRCode.toDataURL(receiptData.verificationUrl, {
+        const svgString = await QRCode.toString(receiptData.verificationUrl, {
+          type: "svg",
           margin: 1,
-          width: 150,
         });
-      } catch {
-        // Silent catch
+        qrCodeDataUrl = `data:image/svg+xml;utf8,${encodeURIComponent(svgString)}`;
+      } catch (err) {
+        console.error("QR Code generation error:", err);
       }
     }
 
@@ -196,12 +197,13 @@ export const getPublicReceiptAction = async (donationIdOrNumber: string): Promis
     let qrCodeDataUrl: string | undefined = undefined;
     if (receiptData.verificationUrl) {
       try {
-        qrCodeDataUrl = await QRCode.toDataURL(receiptData.verificationUrl, {
+        const svgString = await QRCode.toString(receiptData.verificationUrl, {
+          type: "svg",
           margin: 1,
-          width: 150,
         });
-      } catch {
-        // Silent catch
+        qrCodeDataUrl = `data:image/svg+xml;utf8,${encodeURIComponent(svgString)}`;
+      } catch (err) {
+        console.error("QR Code generation error:", err);
       }
     }
 

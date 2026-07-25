@@ -2,11 +2,11 @@
 
 import React, { useState, useRef, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { useForm, Controller, type Resolver } from "react-hook-form";
+import { getProofUrlAction } from "@/server/actions/donation/get-proof-url";
+import { useForm, Controller, type SubmitHandler, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { type DonationDetailDto } from "../types";
-import { updateDonationSchema } from "../schemas/update-donation.schema";
 import { updateDonationAction } from "@/server/actions/donation/update-donation";
 import { uploadTransferProofAction } from "@/server/actions/donation/upload-transfer-proof";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -25,6 +25,60 @@ import { DONATION_TYPES } from "@/constants/donation-types";
 import { PAYMENT_METHODS } from "@/constants/payment-methods";
 import { CurrencyInput } from "./CurrencyInput";
 import { DONATION_ROUTES } from "../config";
+import { useEffect } from "react";
+import { z } from "zod";
+
+const clientUpdateSchema = z
+  .object({
+    donationType: z.nativeEnum(DONATION_TYPES, {
+      message: "Jenis donasi tidak valid",
+    }),
+    paymentMethod: z.nativeEnum(PAYMENT_METHODS, {
+      message: "Metode pembayaran tidak valid",
+    }),
+    amount: z
+      .number({ message: "Jumlah donasi harus berupa angka" })
+      .min(0, "Jumlah donasi tidak boleh negatif"),
+    itemDescription: z.string().optional(),
+    notes: z.string().optional(),
+    transferProofPath: z.string().optional(),
+    transferProofFilename: z.string().optional(),
+    donationDate: z.string().min(1, "Tanggal donasi harus diisi"),
+  })
+  .superRefine((data, ctx) => {
+    if (data.donationType === DONATION_TYPES.BARANG) {
+      if (!data.itemDescription || data.itemDescription.trim().length === 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Deskripsi barang harus diisi untuk donasi barang",
+          path: ["itemDescription"],
+        });
+      }
+    } else {
+      if (data.amount <= 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Jumlah donasi harus lebih besar dari 0",
+          path: ["amount"],
+        });
+      }
+    }
+
+    if (!data.transferProofPath || !data.transferProofFilename) {
+      let message = "Bukti pembayaran harus diunggah untuk pembayaran tunai";
+      if (data.donationType === DONATION_TYPES.BARANG) {
+        message = "Bukti penyerahan harus diunggah untuk donasi barang";
+      } else if (data.paymentMethod === PAYMENT_METHODS.BANK_TRANSFER) {
+        message = "Bukti transfer harus diunggah untuk pembayaran bank transfer";
+      }
+
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message,
+        path: ["transferProofPath"],
+      });
+    }
+  });
 
 interface FormInput {
   donationType: "ZAKAT" | "SHADAQAH" | "SUMBANGAN_LAIN" | "BARANG";
@@ -34,7 +88,7 @@ interface FormInput {
   notes?: string | undefined;
   transferProofPath?: string | undefined;
   transferProofFilename?: string | undefined;
-  donationDate: Date;
+  donationDate: string;
 }
 
 interface EditDonationFormProps {
@@ -46,6 +100,9 @@ export function EditDonationForm({ donation }: EditDonationFormProps) {
   const [isPending, startTransition] = useTransition();
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Local state for loaded preview url
+  const [proofPreviewUrl, setProofPreviewUrl] = useState<string | null>(null);
 
   // Initialize the form with existing values
   const {
@@ -56,7 +113,7 @@ export function EditDonationForm({ donation }: EditDonationFormProps) {
     setValue,
     formState: { errors },
   } = useForm<FormInput>({
-    resolver: zodResolver(updateDonationSchema) as Resolver<FormInput>,
+    resolver: zodResolver(clientUpdateSchema) as Resolver<FormInput>,
     defaultValues: {
       donationType: donation.donationType,
       paymentMethod: donation.paymentMethod,
@@ -65,7 +122,7 @@ export function EditDonationForm({ donation }: EditDonationFormProps) {
       notes: donation.notes ?? "",
       transferProofPath: donation.transferProofPath ?? undefined,
       transferProofFilename: donation.transferProofFilename ?? undefined,
-      donationDate: new Date(donation.donationDate),
+      donationDate: (donation.donationDate ? new Date(donation.donationDate).toISOString().split("T")[0] : "") as string,
     },
   });
 
@@ -79,6 +136,17 @@ export function EditDonationForm({ donation }: EditDonationFormProps) {
 
   // Local state for uploaded file preview if it is an image
   const [localPreview, setLocalPreview] = useState<string | null>(null);
+
+  // Fetch signed URL on mount for preview
+  useEffect(() => {
+    if (donation.transferProofPath) {
+      getProofUrlAction(donation.transferProofPath).then((res) => {
+        if (res.success) {
+          setProofPreviewUrl(res.data);
+        }
+      });
+    }
+  }, [donation.transferProofPath]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -123,9 +191,13 @@ export function EditDonationForm({ donation }: EditDonationFormProps) {
     }
   };
 
-  const onSubmit = (values: FormInput) => {
+  const onSubmit: SubmitHandler<FormInput> = (values) => {
     startTransition(async () => {
-      const res = await updateDonationAction(donation.id, values);
+      const payload = {
+        ...values,
+        donationDate: values.donationDate ? new Date(values.donationDate) : new Date(),
+      };
+      const res = await updateDonationAction(donation.id, payload);
       if (res.success) {
         toast.success("Data donasi berhasil diperbarui");
         router.push(DONATION_ROUTES.DETAIL(donation.id));
@@ -183,8 +255,8 @@ export function EditDonationForm({ donation }: EditDonationFormProps) {
                     render={({ field }) => (
                       <Input
                         type="date"
-                        value={field.value ? new Date(field.value).toISOString().split("T")[0] : ""}
-                        onChange={(e) => field.onChange(new Date(e.target.value))}
+                        value={field.value}
+                        onChange={(e) => field.onChange(e.target.value)}
                       />
                     )}
                   />
@@ -340,19 +412,37 @@ export function EditDonationForm({ donation }: EditDonationFormProps) {
                     </Button>
                   </div>
 
-                  {(localPreview || donation.transferProofPath === transferProofPath) && (
-                    <div className="relative aspect-video w-full rounded-lg overflow-hidden border border-border bg-background">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={localPreview || `/api/storage/placeholder?path=${transferProofPath}`}
-                        alt="Bukti Pratinjau"
-                        className="object-contain w-full h-full"
-                        onError={(e) => {
-                          // Fallback if direct link fails
-                          (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=400";
-                        }}
-                      />
+                  {transferProofFilename?.toLowerCase().endsWith(".pdf") ? (
+                    <div className="flex flex-col items-center justify-center p-4 border border-border rounded-lg bg-muted/20 text-center gap-3">
+                      <Icons.FileText className="h-10 w-10 text-primary" />
+                      <div className="space-y-1">
+                        <span className="text-xs font-semibold block truncate max-w-[200px]">
+                          {transferProofFilename}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground block">Dokumen PDF</span>
+                      </div>
+                      {(localPreview || proofPreviewUrl) && (
+                        <a
+                          href={localPreview || proofPreviewUrl || "#"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-primary underline"
+                        >
+                          Buka PDF
+                        </a>
+                      )}
                     </div>
+                  ) : (
+                    (localPreview || proofPreviewUrl) && (
+                      <div className="relative aspect-video w-full rounded-lg overflow-hidden border border-border bg-background">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={localPreview || proofPreviewUrl || ""}
+                          alt="Bukti Pratinjau"
+                          className="object-contain w-full h-full"
+                        />
+                      </div>
+                    )
                   )}
                 </div>
               ) : (

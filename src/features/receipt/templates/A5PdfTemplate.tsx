@@ -7,11 +7,11 @@ Font.register({
   family: "Inter",
   fonts: [
     {
-      src: "https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_fvQtMwCp5GP3JTkwlS8kn51vg.ttf",
+      src: "/Inter-Regular.ttf",
       fontWeight: "normal",
     },
     {
-      src: "https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_fvQtMwCp5GP8ZHkwlS8kn51vg.ttf",
+      src: "/Inter-Bold.ttf",
       fontWeight: "bold",
     },
   ],
