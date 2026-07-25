@@ -7,15 +7,17 @@ import { type ReceiptData } from "../types";
 let fontsRegistered = false;
 function ensureFontsRegistered() {
   if (fontsRegistered) return;
-  const base = typeof window !== "undefined" ? window.location.origin : "http://localhost:3000";
-  Font.register({
-    family: "Inter",
-    fonts: [
-      { src: `${base}/Inter-Regular.ttf`, fontWeight: "normal" },
-      { src: `${base}/Inter-Bold.ttf`, fontWeight: "bold" },
-    ],
-  });
-  fontsRegistered = true;
+  if (typeof window !== "undefined") {
+    const base = window.location.origin;
+    Font.register({
+      family: "Inter",
+      fonts: [
+        { src: `${base}/Inter-Regular.ttf`, fontWeight: "normal" },
+        { src: `${base}/Inter-Bold.ttf`, fontWeight: "bold" },
+      ],
+    });
+    fontsRegistered = true;
+  }
 }
 
 import { formatIDR } from "@/lib/utils/currency";
