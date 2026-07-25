@@ -25,6 +25,13 @@ export function PrintStyles() {
         #receipt-print-area, #receipt-print-area * {
           visibility: visible !important;
         }
+        /* Ensure images are always rendered in print */
+        #receipt-print-area img {
+          display: block !important;
+          visibility: visible !important;
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
         html, body {
           margin: 0 !important;
           padding: 0 !important;

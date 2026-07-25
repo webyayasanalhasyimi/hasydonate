@@ -23,7 +23,7 @@ import { DONATION_TYPES } from "@/constants/donation-types";
 
 const styles = StyleSheet.create({
   page: {
-    padding: 30,
+    padding: 22,
     fontFamily: "Inter",
     fontSize: 9,
     color: "#1f2937",
@@ -39,11 +39,11 @@ const styles = StyleSheet.create({
   header: {
     borderBottomWidth: 1.5,
     borderBottomColor: "#15803d",
-    paddingBottom: 8,
+    paddingBottom: 6,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    marginBottom: 10,
+    marginBottom: 8,
   },
   headerLeft: {
     flexDirection: "row",
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   foundationInfo: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 12,
+    marginBottom: 8,
   },
   foundationDetails: {
     width: "50%",
@@ -124,9 +124,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#e5e7eb",
     borderRadius: 6,
-    padding: 10,
+    padding: 8,
     backgroundColor: "#f9fafb",
-    marginBottom: 12,
+    marginBottom: 8,
   },
   boxLabel: {
     fontSize: 8,
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#e5e7eb",
     borderRadius: 6,
-    marginBottom: 12,
+    marginBottom: 8,
   },
   tableHeader: {
     backgroundColor: "#f3f4f6",
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 14,
+    marginBottom: 8,
   },
   paymentMethodText: {
     fontSize: 9,
@@ -225,11 +225,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#bbf7d0",
     borderRadius: 8,
-    padding: 10,
+    padding: 8,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 14,
+    marginBottom: 8,
   },
   amountSpelledContainer: {
     width: "65%",
@@ -271,18 +271,18 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: "#e5e7eb",
     borderStyle: "dashed",
-    paddingTop: 10,
+    paddingTop: 8,
   },
   signatureDate: {
     textAlign: "right",
     fontSize: 8,
     color: "#6b7280",
-    marginBottom: 8,
+    marginBottom: 6,
   },
   signatureGrid: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 12,
+    marginBottom: 8,
   },
   signatureCol: {
     width: "45%",
@@ -348,8 +348,8 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: "#e5e7eb",
     borderStyle: "dashed",
-    paddingTop: 8,
-    marginTop: 6,
+    paddingTop: 6,
+    marginTop: 4,
   },
   thankYouText: {
     textAlign: "center",
@@ -516,7 +516,7 @@ export function A5PdfTemplate({ data }: Readonly<{ data: ReceiptData }>) {
         </View>
 
         {/* Signature & Footer (Anchored to Bottom of A5 Page) */}
-        <View>
+        <View wrap={false}>
           {/* Signatures */}
           <View style={styles.signatureContainer}>
             <Text style={styles.signatureDate}>Surabaya, {dateFormatted}</Text>
