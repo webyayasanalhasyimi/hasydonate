@@ -246,7 +246,6 @@ const styles = StyleSheet.create({
     fontSize: 8,
     fontWeight: "bold",
     color: "#1f2937",
-    fontStyle: "italic",
   },
   amountValueContainer: {
     width: "30%",
@@ -278,7 +277,6 @@ const styles = StyleSheet.create({
     textAlign: "right",
     fontSize: 8,
     color: "#6b7280",
-    fontStyle: "italic",
     marginBottom: 8,
   },
   signatureGrid: {
@@ -357,7 +355,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 7.5,
     color: "#4b5563",
-    fontStyle: "italic",
     lineHeight: 1.3,
     marginBottom: 8,
   },
