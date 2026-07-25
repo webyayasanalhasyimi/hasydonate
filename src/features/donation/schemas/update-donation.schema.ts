@@ -17,7 +17,7 @@ export const updateDonationSchema = z
     notes: z.string().optional(),
     transferProofPath: z.string().optional(),
     transferProofFilename: z.string().optional(),
-    donationDate: z.date(),
+    donationDate: z.coerce.date(),
   })
   .superRefine((data, ctx) => {
     if (data.donationType === DONATION_TYPES.BARANG) {

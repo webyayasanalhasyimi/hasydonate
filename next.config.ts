@@ -26,12 +26,12 @@ const nextConfig: NextConfig = {
       worker-src 'self' blob:;
       style-src 'self' 'unsafe-inline';
       img-src 'self' blob: data: https://*.supabase.co https://chart.googleapis.com https://api.qrserver.com;
-      font-src 'self' data:;
+      font-src 'self' data: https://fonts.gstatic.com;
       object-src 'none';
       base-uri 'self';
       form-action 'self';
       frame-ancestors 'none';
-      connect-src 'self' data: blob: https://*.supabase.co wss://*.supabase.co https://chart.googleapis.com https://api.qrserver.com;
+      connect-src 'self' data: blob: https://*.supabase.co wss://*.supabase.co https://chart.googleapis.com https://api.qrserver.com https://fonts.gstatic.com;
       upgrade-insecure-requests;
     `.replace(/\s{2,}/g, " ").trim();
 

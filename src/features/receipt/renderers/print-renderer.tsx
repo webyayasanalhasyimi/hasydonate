@@ -25,6 +25,12 @@ export function PrintStyles() {
         #receipt-print-area, #receipt-print-area * {
           visibility: visible !important;
         }
+        html, body {
+          margin: 0 !important;
+          padding: 0 !important;
+          height: 210mm !important;
+          overflow: hidden !important;
+        }
         #receipt-print-area {
           position: absolute !important;
           left: 0 !important;
