@@ -6,6 +6,7 @@ import {
   type DonationDetailDto,
   type DonationListItemDto,
   type DonationSummaryDto,
+  type DonationUpdateDto,
 } from "@/features/donation/types";
 
 interface DonationWithRelations extends Donation {
@@ -71,6 +72,28 @@ export const DonationService = {
       },
     });
     if (!donation) return null;
+    return mapToDetailDto(donation);
+  },
+
+  async update(id: string, data: DonationUpdateDto): Promise<DonationDetailDto> {
+    const amountDecimal = new Prisma.Decimal(data.amount);
+    const donation = await prisma.donation.update({
+      where: { id },
+      data: {
+        donationType: data.donationType,
+        paymentMethod: data.paymentMethod,
+        amount: amountDecimal,
+        itemDescription: data.donationType === "BARANG" ? (data.itemDescription || null) : null,
+        notes: data.notes || null,
+        transferProofPath: data.paymentMethod === "BANK_TRANSFER" ? (data.transferProofPath || null) : null,
+        transferProofFilename: data.paymentMethod === "BANK_TRANSFER" ? (data.transferProofFilename || null) : null,
+        donationDate: data.donationDate,
+      },
+      include: {
+        donor: true,
+        receiver: true,
+      },
+    });
     return mapToDetailDto(donation);
   },
 

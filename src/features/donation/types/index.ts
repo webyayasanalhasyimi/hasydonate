@@ -12,6 +12,17 @@ export interface DonationCreateDto {
   readonly donationDate: Date;
 }
 
+export interface DonationUpdateDto {
+  readonly donationType: DonationType;
+  readonly paymentMethod: PaymentMethod;
+  readonly amount: number;
+  readonly itemDescription?: string | undefined;
+  readonly notes?: string | undefined;
+  readonly transferProofPath?: string | undefined;
+  readonly transferProofFilename?: string | undefined;
+  readonly donationDate: Date;
+}
+
 export interface DonationListItemDto {
   readonly id: string;
   readonly donationNumber: string;

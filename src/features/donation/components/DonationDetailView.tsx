@@ -94,6 +94,10 @@ export function DonationDetailView({ donation }: DonationDetailViewProps) {
             )}
             Hapus
           </Button>
+          <Button variant="outline" onClick={() => router.push(DONATION_ROUTES.EDIT(donation.id))} disabled={isDeleting}>
+            <Icons.Edit className="h-4 w-4 mr-2" />
+            Edit
+          </Button>
           <Button onClick={handlePrint} disabled={isDeleting}>
             <Icons.Printer className="h-4 w-4 mr-2" />
             Cetak Kwitansi
