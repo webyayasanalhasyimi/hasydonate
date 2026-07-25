@@ -9,6 +9,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/lib/icons";
 import { formatIDR, formatDate } from "@/lib/utils/index";
 import { getProofUrlAction } from "@/server/actions/donation/get-proof-url";
+import { deleteDonationAction } from "@/server/actions/donation/delete-donation";
 import { useRouter } from "next/navigation";
 import { DONATION_ROUTES } from "../config";
 import { toast } from "sonner";
@@ -21,6 +22,7 @@ export function DonationDetailView({ donation }: DonationDetailViewProps) {
   const router = useRouter();
   const [proofUrl, setProofUrl] = useState<string | null>(null);
   const [isLoadingUrl, setIsLoadingUrl] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (donation.transferProofPath) {
@@ -44,6 +46,28 @@ export function DonationDetailView({ donation }: DonationDetailViewProps) {
     router.push(`/dashboard/receipt/${donation.id}`);
   };
 
+  const handleDelete = async () => {
+    if (!window.confirm("Apakah Anda yakin ingin menghapus data donasi ini secara permanen?")) {
+      return;
+    }
+
+    try {
+      setIsDeleting(true);
+      const res = await deleteDonationAction(donation.id);
+      if (res.success) {
+        toast.success("Data donasi berhasil dihapus");
+        router.push(DONATION_ROUTES.LIST);
+        router.refresh();
+      } else {
+        toast.error(res.error.message || "Gagal menghapus data donasi");
+      }
+    } catch {
+      toast.error("Terjadi kesalahan saat menghapus donasi");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   const isPdf = donation.transferProofFilename?.toLowerCase().endsWith(".pdf");
 
   return (
@@ -62,7 +86,15 @@ export function DonationDetailView({ donation }: DonationDetailViewProps) {
             <Icons.ChevronLeft className="h-4 w-4 mr-2" />
             Kembali
           </Button>
-          <Button onClick={handlePrint}>
+          <Button variant="destructive" onClick={handleDelete} disabled={isDeleting}>
+            {isDeleting ? (
+              <Icons.Spinner className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <Icons.Trash className="h-4 w-4 mr-2" />
+            )}
+            Hapus
+          </Button>
+          <Button onClick={handlePrint} disabled={isDeleting}>
             <Icons.Printer className="h-4 w-4 mr-2" />
             Cetak Kwitansi
           </Button>

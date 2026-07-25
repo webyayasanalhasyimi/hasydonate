@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { type ReceiptData } from "../types";
 import { PrintReceiptView, printReceipt } from "../renderers/print-renderer";
-import { generateReceiptPdfBlob } from "../renderers/pdf-renderer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/lib/icons";
@@ -23,6 +22,7 @@ export function ReceiptPreview({ data }: ReceiptPreviewProps) {
   const handleDownload = async () => {
     try {
       setIsDownloading(true);
+      const { generateReceiptPdfBlob } = await import("../renderers/pdf-renderer");
       const blob = await generateReceiptPdfBlob(data);
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");

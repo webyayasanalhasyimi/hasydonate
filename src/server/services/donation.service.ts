@@ -320,5 +320,31 @@ export const DonationService = {
     if (!donation) return false;
     return !!donation.transferProofPath;
   },
+
+  async delete(id: string, userId: string): Promise<void> {
+    await prisma.$transaction(async (tx) => {
+      const donation = await tx.donation.findUnique({
+        where: { id },
+      });
+      if (!donation) {
+        throw new Error("Donasi tidak ditemukan");
+      }
+
+      await tx.donation.delete({
+        where: { id },
+      });
+
+      await tx.auditLog.create({
+        data: {
+          userId,
+          action: "DELETE_DONATION",
+          tableName: "donations",
+          recordId: id,
+          oldValue: donation as unknown as Prisma.InputJsonValue,
+          newValue: Prisma.DbNull,
+        },
+      });
+    });
+  },
 };
 export type DonationServiceType = typeof DonationService;

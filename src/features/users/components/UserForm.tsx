@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useTransition } from "react";
+import React, { useState } from "react";
 import { useForm, type Control, type FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -46,7 +46,7 @@ interface UserFormProps {
 }
 
 export function UserForm({ initialValues, onSubmit, isEdit = false }: UserFormProps) {
-  const [isPending, startTransition] = useTransition();
+  const [isPending, setIsPending] = useState(false);
 
   const form = useForm<UserFormInputValues>({
     resolver: zodResolver(userFormInputSchema) as unknown as never,
@@ -59,8 +59,9 @@ export function UserForm({ initialValues, onSubmit, isEdit = false }: UserFormPr
     },
   });
 
-  const handleSubmit = (values: UserFormInputValues) => {
-    startTransition(async () => {
+  const handleSubmit = async (values: UserFormInputValues) => {
+    try {
+      setIsPending(true);
       await onSubmit({
         fullName: values.fullName,
         email: values.email,
@@ -68,7 +69,9 @@ export function UserForm({ initialValues, onSubmit, isEdit = false }: UserFormPr
         isActive: values.isActiveString === "true",
         password: values.password === "" ? undefined : values.password,
       });
-    });
+    } finally {
+      setIsPending(false);
+    }
   };
 
   const ctrl = form.control as unknown as Control<FieldValues>;
