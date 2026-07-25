@@ -2,20 +2,22 @@ import React from "react";
 import { Document, Page, Text, View, StyleSheet, Image, Font } from "@/features/receipt/lib/react-pdf-shim";
 import { type ReceiptData } from "../types";
 
-// Register custom Google Font to match web design typography
-Font.register({
-  family: "Inter",
-  fonts: [
-    {
-      src: "/Inter-Regular.ttf",
-      fontWeight: "normal",
-    },
-    {
-      src: "/Inter-Bold.ttf",
-      fontWeight: "bold",
-    },
-  ],
-});
+// Register Inter font — must be absolute URLs for @react-pdf/renderer browser worker
+// We register inside a function called at render time so window is available.
+let fontsRegistered = false;
+function ensureFontsRegistered() {
+  if (fontsRegistered) return;
+  const base = typeof window !== "undefined" ? window.location.origin : "http://localhost:3000";
+  Font.register({
+    family: "Inter",
+    fonts: [
+      { src: `${base}/Inter-Regular.ttf`, fontWeight: "normal" },
+      { src: `${base}/Inter-Bold.ttf`, fontWeight: "bold" },
+    ],
+  });
+  fontsRegistered = true;
+}
+
 import { formatIDR } from "@/lib/utils/currency";
 import { DONATION_TYPES } from "@/constants/donation-types";
 
@@ -407,6 +409,7 @@ const styles = StyleSheet.create({
 });
 
 export function A5PdfTemplate({ data }: Readonly<{ data: ReceiptData }>) {
+  ensureFontsRegistered();
   const dateFormatted = new Date(data.donationDate).toLocaleDateString("id-ID", {
     day: "numeric",
     month: "long",

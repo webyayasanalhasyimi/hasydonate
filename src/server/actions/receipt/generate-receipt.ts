@@ -10,6 +10,19 @@ import { success, failure } from "../action-result";
 import { PaymentMethod } from "@prisma/client";
 import { getSignedUrl } from "@/lib/storage/signed-url";
 
+async function buildQrDataUrl(url: string): Promise<string | undefined> {
+  try {
+    const apiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
+    const res = await fetch(apiUrl);
+    if (!res.ok) return undefined;
+    const buffer = await res.arrayBuffer();
+    const base64 = Buffer.from(buffer).toString("base64");
+    return `data:image/png;base64,${base64}`;
+  } catch {
+    return undefined;
+  }
+}
+
 export const generateReceiptAction = async (donationId: string): Promise<Result<ReceiptData>> => {
   try {
     await requireAuth();
@@ -91,7 +104,7 @@ export const generateReceiptAction = async (donationId: string): Promise<Result<
     );
 
     const qrCodeDataUrl = receiptData.verificationUrl
-      ? `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(receiptData.verificationUrl)}`
+      ? await buildQrDataUrl(receiptData.verificationUrl)
       : undefined;
 
     return success({
@@ -185,7 +198,7 @@ export const getPublicReceiptAction = async (donationIdOrNumber: string): Promis
     );
 
     const qrCodeDataUrl = receiptData.verificationUrl
-      ? `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(receiptData.verificationUrl)}`
+      ? await buildQrDataUrl(receiptData.verificationUrl)
       : undefined;
 
     return success({
