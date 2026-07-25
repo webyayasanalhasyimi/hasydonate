@@ -44,7 +44,40 @@ export const generateReceiptAction = async (donationId: string): Promise<Result<
       }
     }
 
-    const receiptData = buildReceiptData(donation, settings, logoUrl);
+    // Resolve signed URL for the receiver signature if it exists
+    let receivedBySignatureUrl: string | undefined = undefined;
+    if (donation.receivedBySignaturePath) {
+      try {
+        const parts = donation.receivedBySignaturePath.split("/");
+        const bucket = parts[0] ?? "foundation-assets";
+        const cleanPath = parts.slice(1).join("/");
+        receivedBySignatureUrl = await getSignedUrl(bucket, cleanPath);
+      } catch {
+        // Silent catch
+      }
+    }
+
+    // Resolve signed URL for the approved by signature if it exists
+    let approvedBySignatureUrl: string | undefined = undefined;
+    const foundSignatureSetting = settings.find((s) => s.key === "foundation.signaturePath");
+    if (foundSignatureSetting?.value) {
+      try {
+        const parts = foundSignatureSetting.value.split("/");
+        const bucket = parts[0] ?? "foundation-assets";
+        const cleanPath = parts.slice(1).join("/");
+        approvedBySignatureUrl = await getSignedUrl(bucket, cleanPath);
+      } catch {
+        // Silent catch
+      }
+    }
+
+    const receiptData = buildReceiptData(
+      donation,
+      settings,
+      logoUrl,
+      receivedBySignatureUrl,
+      approvedBySignatureUrl
+    );
 
     return success(receiptData);
   } catch (err) {

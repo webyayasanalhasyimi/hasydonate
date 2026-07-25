@@ -25,6 +25,8 @@ export interface UserDetailDto {
   readonly email: string;
   readonly role: RoleValue;
   readonly isActive: boolean;
+  readonly signaturePath?: string | null | undefined;
+  readonly signatureUrl?: string | null | undefined;
   readonly createdAt: Date;
   readonly updatedAt: Date;
   readonly auditLogs: readonly UserAuditLogDto[];
@@ -35,6 +37,7 @@ export interface UserCreateDto {
   readonly email: string;
   readonly role: RoleValue;
   readonly isActive: boolean;
+  readonly signaturePath?: string | null | undefined;
   readonly password?: string | undefined;
 }
 
@@ -43,6 +46,7 @@ export interface UserUpdateDto {
   readonly email: string;
   readonly role: RoleValue;
   readonly isActive: boolean;
+  readonly signaturePath?: string | null | undefined;
   readonly password?: string | undefined;
 }
 

@@ -15,6 +15,7 @@ export const mapSettingsToDto = (settings: readonly Setting[]): FoundationSettin
     foundationEmail: getVal(SETTINGS_KEYS.FOUNDATION_EMAIL),
     foundationWebsite: getVal(SETTINGS_KEYS.FOUNDATION_WEBSITE),
     foundationLogoPath: getVal(SETTINGS_KEYS.FOUNDATION_LOGO_PATH),
+    foundationSignaturePath: getVal(SETTINGS_KEYS.FOUNDATION_SIGNATURE_PATH),
     
     bankName: getVal(SETTINGS_KEYS.BANK_NAME),
     bankAccountNumber: getVal(SETTINGS_KEYS.BANK_ACCOUNT_NUMBER),
@@ -36,6 +37,7 @@ export const mapDtoToRecord = (dto: FoundationSettingsDto): Record<string, strin
     [SETTINGS_KEYS.FOUNDATION_EMAIL]: dto.foundationEmail,
     [SETTINGS_KEYS.FOUNDATION_WEBSITE]: dto.foundationWebsite,
     [SETTINGS_KEYS.FOUNDATION_LOGO_PATH]: dto.foundationLogoPath,
+    [SETTINGS_KEYS.FOUNDATION_SIGNATURE_PATH]: dto.foundationSignaturePath,
     
     [SETTINGS_KEYS.BANK_NAME]: dto.bankName,
     [SETTINGS_KEYS.BANK_ACCOUNT_NUMBER]: dto.bankAccountNumber,

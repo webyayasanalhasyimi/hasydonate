@@ -29,6 +29,7 @@ function mapToDetailDto(donation: DonationWithRelations): DonationDetailDto {
     transferProofFilename: donation.transferProofFilename,
     donationDate: donation.donationDate,
     receivedByName: donation.receiver.fullName,
+    receivedBySignaturePath: donation.receiver.signaturePath,
     createdAt: donation.createdAt,
   };
 }

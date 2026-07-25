@@ -29,13 +29,14 @@ enum PaymentMethod {
 }
 
 model Profile {
-  id        String   @id @default(uuid()) @db.Uuid
-  fullName  String   @map("full_name") @db.VarChar(100)
-  email     String   @unique @db.VarChar(255)
-  role      Role
-  isActive  Boolean  @default(true) @map("is_active")
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+  id            String   @id @default(uuid()) @db.Uuid
+  fullName      String   @map("full_name") @db.VarChar(100)
+  email         String   @unique @db.VarChar(255)
+  role          Role
+  isActive      Boolean  @default(true) @map("is_active")
+  signaturePath String?  @map("signature_path") @db.Text
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
   donations Donation[]
   auditLogs AuditLog[]

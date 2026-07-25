@@ -11,7 +11,8 @@ import { type FoundationSettingsDto } from "@/features/settings/types";
 
 export const updateSettingsAction = async (
   values: unknown,
-  oldLogoPath?: string
+  oldLogoPath?: string,
+  oldSignaturePath?: string
 ): Promise<Result<readonly unknown[]>> => {
   try {
     const user = await requireAdmin();
@@ -39,9 +40,22 @@ export const updateSettingsAction = async (
       }
     }
 
+    // Signature replacement: delete the old signature from storage if path changed
+    const newSignaturePath = parsed.data.foundationSignaturePath;
+    if (oldSignaturePath && newSignaturePath && oldSignaturePath !== newSignaturePath) {
+      try {
+        const parts = oldSignaturePath.split("/");
+        const bucket = parts[0] ?? "foundation-assets";
+        const cleanPath = parts.slice(1).join("/");
+        await deleteFile(bucket, cleanPath);
+      } catch {
+        // Fail silently
+      }
+    }
+
     return success(result);
   } catch (err) {
-    // Cleanup: If database update fails, delete the newly uploaded logo (if any)
+    // Cleanup: If database update fails, delete the newly uploaded logo/signature
     const dataObj = values as Record<string, unknown> | null;
     const newLogo = dataObj?.foundationLogoPath as string | null;
     if (newLogo && newLogo !== oldLogoPath) {
@@ -52,6 +66,18 @@ export const updateSettingsAction = async (
         await deleteFile(bucket, cleanPath);
       } catch {
         // Fail silently on cleanup
+      }
+    }
+
+    const newSignature = dataObj?.foundationSignaturePath as string | null;
+    if (newSignature && newSignature !== oldSignaturePath) {
+      try {
+        const parts = newSignature.split("/");
+        const bucket = parts[0] ?? "foundation-assets";
+        const cleanPath = parts.slice(1).join("/");
+        await deleteFile(bucket, cleanPath);
+      } catch {
+        // Fail silently
       }
     }
     return failure(err);

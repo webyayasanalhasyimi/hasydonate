@@ -276,7 +276,16 @@ const styles = StyleSheet.create({
     fontSize: 7,
     color: "#6b7280",
     textTransform: "uppercase",
-    marginBottom: 28,
+    marginBottom: 4,
+  },
+  signatureImage: {
+    height: 28,
+    objectFit: "contain",
+    marginHorizontal: "auto",
+    marginVertical: 2,
+  },
+  signatureImagePlaceholder: {
+    height: 32,
   },
   signatureName: {
     fontSize: 8,
@@ -462,11 +471,21 @@ export function A5PdfTemplate({ data }: Readonly<{ data: ReceiptData }>) {
             <View style={styles.signatureGrid}>
               <View style={styles.signatureCol}>
                 <Text style={styles.signatureLabel}>Diterima Oleh:</Text>
+                {data.receivedBySignatureUrl ? (
+                  <Image src={data.receivedBySignatureUrl} style={styles.signatureImage} />
+                ) : (
+                  <View style={styles.signatureImagePlaceholder} />
+                )}
                 <Text style={styles.signatureName}>{data.receivedBy}</Text>
                 <Text style={styles.signatureRole}>Front Admin</Text>
               </View>
               <View style={styles.signatureCol}>
                 <Text style={styles.signatureLabel}>Mengetahui:</Text>
+                {data.approvedBySignatureUrl ? (
+                  <Image src={data.approvedBySignatureUrl} style={styles.signatureImage} />
+                ) : (
+                  <View style={styles.signatureImagePlaceholder} />
+                )}
                 <Text style={styles.signatureName}>{data.signatureName}</Text>
                 <Text style={styles.signatureRole}>{data.signaturePosition}</Text>
               </View>

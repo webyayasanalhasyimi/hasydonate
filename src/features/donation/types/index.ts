@@ -37,6 +37,7 @@ export interface DonationDetailDto {
   readonly transferProofFilename: string | null;
   readonly donationDate: Date;
   readonly receivedByName: string;
+  readonly receivedBySignaturePath?: string | null | undefined;
   readonly createdAt: Date;
 }
 

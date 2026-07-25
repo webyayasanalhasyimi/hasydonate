@@ -6,6 +6,7 @@ export const userFormSchema = z.object({
   email: z.string().email("Format email tidak valid"),
   role: z.nativeEnum(Role),
   isActive: z.boolean().default(true),
+  signaturePath: z.string().optional().nullable(),
   password: z
     .string()
     .default("")

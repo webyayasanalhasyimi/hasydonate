@@ -22,6 +22,7 @@ export function EditUserClient({ user }: EditUserClientProps) {
     readonly email: string;
     readonly role: Role;
     readonly isActive: boolean;
+    readonly signaturePath?: string | null | undefined;
     readonly password?: string | undefined;
   }) => {
     const res = await updateUserAction(user.id, data);

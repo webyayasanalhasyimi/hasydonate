@@ -21,6 +21,7 @@ export function SettingsForm() {
   const [isLoading, setIsLoading] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [signaturePreview, setSignaturePreview] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<SettingsFormValues>({
@@ -32,6 +33,7 @@ export function SettingsForm() {
       foundationEmail: "",
       foundationWebsite: "",
       foundationLogoPath: "",
+      foundationSignaturePath: "",
       bankName: "",
       bankAccountNumber: "",
       bankAccountName: "",
@@ -59,6 +61,9 @@ export function SettingsForm() {
         reset(res.data);
         if (res.data.logoUrl) {
           setLogoPreview(res.data.logoUrl);
+        }
+        if (res.data.signatureUrl) {
+          setSignaturePreview(res.data.signatureUrl);
         }
       } else {
         toast.error("Gagal memuat pengaturan.");
@@ -99,15 +104,46 @@ export function SettingsForm() {
     setLogoPreview(null);
   };
 
+  const handleSignatureUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error("Ukuran file tanda tangan maksimal 2MB.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("logo", file);
+
+    setIsUploading(true);
+    const res = await uploadLogoAction(formData);
+    setIsUploading(false);
+
+    if (res.success) {
+      setValue("foundationSignaturePath", res.data, { shouldDirty: true });
+      setSignaturePreview(URL.createObjectURL(file));
+      toast.success("Tanda tangan berhasil diunggah.");
+    } else {
+      toast.error(res.error.message || "Gagal mengunggah tanda tangan.");
+    }
+  };
+
+  const handleRemoveSignature = () => {
+    setValue("foundationSignaturePath", "", { shouldDirty: true });
+    setSignaturePreview(null);
+  };
+
   const onSubmit = (values: SettingsFormValues) => {
     startTransition(async () => {
-      const res = await updateSettingsAction(values, initialData?.foundationLogoPath);
+      const res = await updateSettingsAction(values, initialData?.foundationLogoPath, initialData?.foundationSignaturePath);
       if (res.success) {
         toast.success("Pengaturan berhasil disimpan.");
         // Sync states to reset dirty checks
         const nextData: FoundationSettingsDto = {
           ...values,
           ...(logoPreview ? { logoUrl: logoPreview } : {}),
+          ...(signaturePreview ? { signatureUrl: signaturePreview } : {}),
         };
         setInitialData(nextData);
         reset(values);
@@ -287,7 +323,7 @@ export function SettingsForm() {
         </div>
 
         {/* Sidebar Image Panel */}
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1 space-y-6">
           <Card>
             <CardHeader className="pb-3 border-b border-border bg-muted/10">
               <CardTitle className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
@@ -326,6 +362,48 @@ export function SettingsForm() {
               )}
               {errors.foundationLogoPath && (
                 <span className="text-xs text-destructive block mt-1">{errors.foundationLogoPath.message}</span>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-3 border-b border-border bg-muted/10">
+              <CardTitle className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
+                Tanda Tangan Pengetahui
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6 space-y-4 text-center">
+              {signaturePreview ? (
+                <div className="space-y-3">
+                  <div className="relative aspect-video w-full max-w-[150px] mx-auto border border-border rounded-xl overflow-hidden bg-muted/10 flex items-center justify-center p-2">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={signaturePreview} alt="Signature Preview" className="object-contain max-h-full max-w-full" />
+                  </div>
+                  <div className="flex justify-center gap-2">
+                    <Button type="button" variant="outline" size="sm" onClick={handleRemoveSignature}>
+                      <Icons.Trash className="h-4 w-4 mr-2 text-destructive" />
+                      Hapus
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="border-2 border-dashed border-border rounded-xl p-6 flex flex-col items-center justify-center gap-2 bg-muted/5">
+                  <Icons.Upload className="h-8 w-8 text-muted-foreground" />
+                  <span className="text-xs font-medium text-muted-foreground">Unggah Tanda Tangan</span>
+                  <span className="text-[10px] text-muted-foreground">Format PNG/JPG/JPEG, Maks 2MB</span>
+                  <label className="cursor-pointer mt-2">
+                    <span className="inline-flex items-center justify-center rounded-md text-xs font-bold h-8 px-3 border border-border bg-background hover:bg-muted text-foreground transition-all">
+                      Pilih File
+                    </span>
+                    <input type="file" accept="image/png, image/jpeg, image/jpg" onChange={handleSignatureUpload} className="hidden" disabled={isUploading} />
+                  </label>
+                  {isUploading && (
+                    <span className="text-[10px] text-muted-foreground animate-pulse mt-1">Mengunggah...</span>
+                  )}
+                </div>
+              )}
+              {errors.foundationSignaturePath && (
+                <span className="text-xs text-destructive block mt-1">{errors.foundationSignaturePath.message}</span>
               )}
             </CardContent>
           </Card>

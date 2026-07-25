@@ -7,6 +7,7 @@ export const settingsSchema = z.object({
   foundationEmail: z.string().email("Format email tidak valid"),
   foundationWebsite: z.string().url("Format website URL tidak valid (harus diawali http:// atau https://)"),
   foundationLogoPath: z.string(),
+  foundationSignaturePath: z.string(),
   
   bankName: z.string().min(2, "Nama Bank harus diisi"),
   bankAccountNumber: z.string().regex(/^[0-9]+$/, "Nomor rekening harus berupa angka saja"),

@@ -15,8 +15,16 @@ export function PrintReceiptSignature({ data }: Readonly<{ data: ReceiptData }>)
       </div>
       <div className="grid grid-cols-2 gap-4 pt-1 text-center">
         {/* Left: Input Staff */}
-        <div className="space-y-10">
+        <div className="flex flex-col justify-between h-20">
           <span className="text-muted-foreground block text-[9px] uppercase tracking-wide">Diterima Oleh (Received By):</span>
+          <div className="flex flex-col items-center justify-center flex-1 h-10 my-1">
+            {data.receivedBySignatureUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={data.receivedBySignatureUrl} alt="Signature" className="h-8 object-contain" />
+            ) : (
+              <div className="h-8" />
+            )}
+          </div>
           <div>
             <div className="font-extrabold text-foreground border-b border-muted-foreground/30 pb-0.5 mx-4">
               {data.receivedBy}
@@ -26,8 +34,16 @@ export function PrintReceiptSignature({ data }: Readonly<{ data: ReceiptData }>)
         </div>
 
         {/* Right: Authorizer / Approved By (from Settings) */}
-        <div className="space-y-10">
+        <div className="flex flex-col justify-between h-20">
           <span className="text-muted-foreground block text-[9px] uppercase tracking-wide">Mengetahui (Approved By):</span>
+          <div className="flex flex-col items-center justify-center flex-1 h-10 my-1">
+            {data.approvedBySignatureUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={data.approvedBySignatureUrl} alt="Signature" className="h-8 object-contain" />
+            ) : (
+              <div className="h-8" />
+            )}
+          </div>
           <div>
             <div className="font-extrabold text-foreground border-b border-muted-foreground/30 pb-0.5 mx-4">
               {data.signatureName}

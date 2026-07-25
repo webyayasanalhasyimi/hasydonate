@@ -17,6 +17,7 @@ export default function NewUserPage() {
     readonly email: string;
     readonly role: Role;
     readonly isActive: boolean;
+    readonly signaturePath?: string | null | undefined;
     readonly password?: string | undefined;
   }) => {
     const res = await createUserAction(data);

@@ -5,6 +5,7 @@ export interface FoundationSettingsDto {
   readonly foundationEmail: string;
   readonly foundationWebsite: string;
   readonly foundationLogoPath: string;
+  readonly foundationSignaturePath: string;
   
   readonly bankName: string;
   readonly bankAccountNumber: string;
@@ -16,4 +17,5 @@ export interface FoundationSettingsDto {
   readonly receiptSignaturePosition: string;
   readonly receiptDefaultTemplate: string;
   readonly logoUrl?: string | undefined;
+  readonly signatureUrl?: string | undefined;
 }

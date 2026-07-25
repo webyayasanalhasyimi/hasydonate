@@ -35,6 +35,8 @@ export interface ReceiptData {
   readonly statusLabel?: string;
   readonly watermarkText?: string;
   readonly logoUrl?: string | undefined;
+  readonly receivedBySignatureUrl?: string | undefined;
+  readonly approvedBySignatureUrl?: string | undefined;
 }
 
 export interface ReceiptTemplate {

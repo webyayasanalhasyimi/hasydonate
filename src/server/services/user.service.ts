@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma/client";
 import { Prisma, Role } from "@prisma/client";
 import { createAdminSupabase } from "@/lib/supabase/admin";
 import { type RoleValue } from "@/lib/auth/roles";
+import { getSignedUrl } from "@/lib/storage/signed-url";
 import {
   type UserDetailDto,
   type UserCreateDto,
@@ -36,6 +37,7 @@ export const UserService = {
           email: data.email,
           role: data.role,
           isActive: data.isActive,
+          signaturePath: data.signaturePath || null,
         },
       });
 
@@ -57,6 +59,7 @@ export const UserService = {
         email: profile.email,
         role: profile.role as RoleValue,
         isActive: profile.isActive,
+        signaturePath: profile.signaturePath,
         createdAt: profile.createdAt,
         updatedAt: profile.updatedAt,
         auditLogs: [],
@@ -122,14 +125,20 @@ export const UserService = {
     }
 
     // Update local database profile
+    const updateData: Prisma.ProfileUpdateInput = {
+      fullName: data.fullName,
+      email: data.email,
+      role: data.role,
+      isActive: data.isActive,
+    };
+
+    if (data.signaturePath !== undefined) {
+      updateData.signaturePath = data.signaturePath;
+    }
+
     const profile = await prisma.profile.update({
       where: { id },
-      data: {
-        fullName: data.fullName,
-        email: data.email,
-        role: data.role,
-        isActive: data.isActive,
-      },
+      data: updateData,
     });
 
     // Write audit log tracking only mutated fields
@@ -151,6 +160,10 @@ export const UserService = {
     if (currentProfile.isActive !== data.isActive) {
       oldValues.isActive = currentProfile.isActive;
       newValues.isActive = data.isActive;
+    }
+    if (currentProfile.signaturePath !== data.signaturePath) {
+      oldValues.signaturePath = currentProfile.signaturePath;
+      newValues.signaturePath = data.signaturePath;
     }
 
     if (Object.keys(oldValues).length > 0) {
@@ -195,12 +208,26 @@ export const UserService = {
       createdAt: l.createdAt,
     }));
 
+    let signatureUrl: string | null = null;
+    if (profile.signaturePath) {
+      try {
+        const parts = profile.signaturePath.split("/");
+        const bucket = parts[0] ?? "foundation-assets";
+        const cleanPath = parts.slice(1).join("/");
+        signatureUrl = await getSignedUrl(bucket, cleanPath);
+      } catch {
+        // Silent catch
+      }
+    }
+
     return {
       id: profile.id,
       fullName: profile.fullName,
       email: profile.email,
       role: profile.role as RoleValue,
       isActive: profile.isActive,
+      signaturePath: profile.signaturePath,
+      signatureUrl,
       createdAt: profile.createdAt,
       updatedAt: profile.updatedAt,
       auditLogs,
