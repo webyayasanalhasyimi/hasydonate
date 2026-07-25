@@ -9,9 +9,9 @@ const prismaClientSingleton = (): PrismaClient => {
   }
   const pool = new Pool({
     connectionString,
-    max: 2,
+    max: 10,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
+    connectionTimeoutMillis: 15000,
   });
   const adapter = new PrismaPg(pool);
   return new PrismaClient({ adapter });
