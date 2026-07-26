@@ -29,7 +29,7 @@ export function DonationDistribution({
                 <div className="flex justify-between text-xs">
                   <span className="font-medium text-foreground">{item.label}</span>
                   <span className="text-muted-foreground">
-                    {formatIDR(item.amount)} ({item.percentage}%)
+                    {item.id === "BARANG" && item.amount === 0 ? "Non-Nominal" : formatIDR(item.amount)} ({item.percentage}%)
                   </span>
                 </div>
                 <div className="w-full h-2 bg-muted rounded-full overflow-hidden">

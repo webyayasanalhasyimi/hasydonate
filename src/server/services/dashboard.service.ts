@@ -146,13 +146,20 @@ export const DashboardService = {
       .sort((a, b) => a.date.localeCompare(b.date));
 
     // 4. Distribution Calculations
+    const typeLabelMap: Record<string, string> = {
+      ZAKAT: "Zakat",
+      SHADAQAH: "Shadaqah",
+      SUMBANGAN_LAIN: "Sumbangan Lain",
+      BARANG: "Barang",
+    };
+
     const typeTotalAmount = typeGroups.reduce((acc, g) => acc + (g._sum.amount ? Number(g._sum.amount) : 0), 0);
     const typeDistribution: readonly DashboardDistributionItemDto[] = typeGroups.map((g) => {
       const amt = g._sum.amount ? Number(g._sum.amount) : 0;
       const pct = typeTotalAmount > 0 ? (amt / typeTotalAmount) * 100 : 0;
       return {
         id: g.donationType,
-        label: g.donationType,
+        label: typeLabelMap[g.donationType] || g.donationType,
         count: g._count.id || 0,
         amount: amt,
         percentage: parseFloat(pct.toFixed(1)),
