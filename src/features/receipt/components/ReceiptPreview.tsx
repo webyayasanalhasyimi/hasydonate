@@ -123,12 +123,12 @@ Semoga menjadi berkah dan amal jariyah.`;
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={handlePrint}>
+        <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 w-full sm:w-auto">
+          <Button variant="outline" size="sm" onClick={handlePrint} className="flex-1 sm:flex-initial">
             <Icons.Printer className="h-4 w-4 mr-2" />
             Cetak
           </Button>
-          <Button variant="outline" size="sm" onClick={handleDownload} disabled={isDownloading}>
+          <Button variant="outline" size="sm" onClick={handleDownload} disabled={isDownloading} className="flex-1 sm:flex-initial">
             {isDownloading ? (
               <>
                 <Icons.Spinner className="h-4 w-4 animate-spin mr-2" />
@@ -141,7 +141,7 @@ Semoga menjadi berkah dan amal jariyah.`;
               </>
             )}
           </Button>
-          <Button variant="secondary" size="sm" onClick={handleShareWhatsApp}>
+          <Button variant="secondary" size="sm" onClick={handleShareWhatsApp} className="w-full sm:w-auto">
             <Icons.Share className="h-4 w-4 mr-2" />
             Kirim WA
           </Button>

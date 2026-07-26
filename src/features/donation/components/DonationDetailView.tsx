@@ -81,7 +81,7 @@ export function DonationDetailView({ donation }: DonationDetailViewProps) {
             Rincian lengkap data donasi dan administrasi tanda terima.
           </Typography>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
           <Button variant="outline" onClick={() => router.push(DONATION_ROUTES.LIST)}>
             <Icons.ChevronLeft className="h-4 w-4 mr-2" />
             Kembali
