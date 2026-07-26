@@ -17,7 +17,7 @@ export const A5Template: ReceiptTemplate = {
     return (
       <div 
         id="receipt-print-area" 
-        className="w-full max-w-[148mm] min-h-[210mm] bg-white p-[10mm] shadow-none border-0 box-border flex flex-col justify-between gap-4 font-sans select-text relative"
+        className="w-full max-w-[148mm] min-h-[210mm] bg-white p-[8mm] shadow-none border-0 box-border flex flex-col gap-3 font-sans select-text relative"
       >
         {/* Future Watermark Support */}
         {data.watermarkText && (
@@ -28,7 +28,7 @@ export const A5Template: ReceiptTemplate = {
           </div>
         )}
 
-        <div className="space-y-4 z-10">
+        <div className="space-y-3 z-10">
           <PrintReceiptHeader data={data} />
           <PrintReceiptFoundation data={data} />
           <PrintReceiptDonatur data={data} />
@@ -37,7 +37,7 @@ export const A5Template: ReceiptTemplate = {
           <PrintReceiptAmount data={data} />
         </div>
 
-        <div className="space-y-4 z-10 border-t border-dashed border-border pt-4">
+        <div className="space-y-3 z-10 border-t border-dashed border-border pt-3 mt-auto">
           <PrintReceiptSignature data={data} />
           <PrintReceiptFooter data={data} />
         </div>

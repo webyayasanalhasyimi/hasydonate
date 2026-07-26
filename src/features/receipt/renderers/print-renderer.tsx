@@ -35,17 +35,18 @@ export function PrintStyles() {
         html, body {
           margin: 0 !important;
           padding: 0 !important;
-          height: 210mm !important;
-          overflow: hidden !important;
+          height: auto !important;
+          overflow: visible !important;
         }
         #receipt-print-area {
           position: absolute !important;
           left: 0 !important;
           top: 0 !important;
           width: 148mm !important;
-          height: 210mm !important;
+          height: auto !important;
+          min-height: 210mm !important;
           box-sizing: border-box !important;
-          overflow: hidden !important;
+          overflow: visible !important;
           margin: 0 !important;
           padding: 8mm !important;
           border: none !important;
