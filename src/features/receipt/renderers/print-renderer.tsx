@@ -18,30 +18,34 @@ export function PrintStyles() {
   return (
     <style dangerouslySetInnerHTML={{ __html: `
       @media print {
-        /* Hide everything except the print receipt container */
+        /* Collapse body height so hidden content doesn't generate blank pages */
+        html, body {
+          margin: 0 !important;
+          padding: 0 !important;
+          height: 0 !important;
+          overflow: hidden !important;
+        }
+        /* Hide all content */
         body * {
           visibility: hidden !important;
         }
+        /* Show only the receipt */
         #receipt-print-area, #receipt-print-area * {
           visibility: visible !important;
         }
-        /* Ensure images are always rendered in print */
+        /* Ensure images always render */
         #receipt-print-area img {
           display: block !important;
           visibility: visible !important;
           -webkit-print-color-adjust: exact !important;
           print-color-adjust: exact !important;
         }
-        html, body {
-          margin: 0 !important;
-          padding: 0 !important;
-          height: auto !important;
-          overflow: visible !important;
-        }
+        /* position:fixed takes the receipt out of normal flow,
+           preventing extra blank pages from the rest of the DOM */
         #receipt-print-area {
-          position: absolute !important;
-          left: 0 !important;
+          position: fixed !important;
           top: 0 !important;
+          left: 0 !important;
           width: 148mm !important;
           height: auto !important;
           min-height: 210mm !important;
@@ -54,7 +58,6 @@ export function PrintStyles() {
           background: white !important;
           z-index: 9999999 !important;
         }
-        /* Override page sizing */
         @page {
           size: A5 portrait;
           margin: 0 !important;
