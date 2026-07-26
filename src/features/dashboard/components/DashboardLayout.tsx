@@ -184,18 +184,6 @@ export function DashboardLayout() {
             )}
           </div>
 
-          {/* Setup Config Status */}
-          <div className="w-full">
-            {renderWidget(
-              {
-                data: overviewState.data?.systemStatus,
-                loading: overviewState.loading,
-                error: overviewState.error,
-              },
-              "h-64",
-              (systemStatus) => <SystemStatus statusItems={systemStatus} />
-            )}
-          </div>
         </div>
       </div>
     </div>
