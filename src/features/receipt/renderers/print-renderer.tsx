@@ -2,11 +2,50 @@ import React from "react";
 import { type ReceiptData } from "../types";
 import { A5Template } from "../templates/A5Template";
 
+export type PaperSize = "A5" | "A4";
+
 /**
- * Triggers standard browser print dialog targeting A5 portrait styles.
+ * Triggers standard browser print dialog targeting A5 or A4 portrait styles.
  */
-export function printReceipt(): void {
+export function printReceipt(paperSize: PaperSize = "A5"): void {
   if (typeof window !== "undefined") {
+    let styleEl = document.getElementById("dynamic-print-paper-size") as HTMLStyleElement | null;
+    if (!styleEl) {
+      styleEl = document.createElement("style");
+      styleEl.id = "dynamic-print-paper-size";
+      document.head.appendChild(styleEl);
+    }
+
+    if (paperSize === "A4") {
+      styleEl.textContent = `
+        @media print {
+          @page {
+            size: A4 portrait;
+            margin: 0 !important;
+          }
+          #receipt-print-area {
+            width: 210mm !important;
+            min-height: 297mm !important;
+            padding: 12mm !important;
+          }
+        }
+      `;
+    } else {
+      styleEl.textContent = `
+        @media print {
+          @page {
+            size: A5 portrait;
+            margin: 0 !important;
+          }
+          #receipt-print-area {
+            width: 148mm !important;
+            min-height: 210mm !important;
+            padding: 8mm !important;
+          }
+        }
+      `;
+    }
+
     window.print();
   }
 }

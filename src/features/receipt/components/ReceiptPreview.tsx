@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { type ReceiptData } from "../types";
-import { PrintReceiptView, printReceipt } from "../renderers/print-renderer";
+import { PrintReceiptView, printReceipt, type PaperSize } from "../renderers/print-renderer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/lib/icons";
@@ -61,8 +61,8 @@ export function ReceiptPreview({ data }: ReceiptPreviewProps) {
     }
   };
 
-  const handlePrint = () => {
-    printReceipt();
+  const handlePrint = (size: PaperSize) => {
+    printReceipt(size);
   };
 
   const handleShareWhatsApp = () => {
@@ -124,9 +124,13 @@ Semoga menjadi berkah dan amal jariyah.`;
           </div>
         </div>
         <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 w-full sm:w-auto">
-          <Button variant="outline" size="sm" onClick={handlePrint} className="flex-1 sm:flex-initial">
+          <Button variant="outline" size="sm" onClick={() => handlePrint("A5")} className="flex-1 sm:flex-initial">
             <Icons.Printer className="h-4 w-4 mr-2" />
-            Cetak
+            Cetak A5
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => handlePrint("A4")} className="flex-1 sm:flex-initial">
+            <Icons.Printer className="h-4 w-4 mr-2" />
+            Cetak A4
           </Button>
           <Button variant="outline" size="sm" onClick={handleDownload} disabled={isDownloading} className="flex-1 sm:flex-initial">
             {isDownloading ? (

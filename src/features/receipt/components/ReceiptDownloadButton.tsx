@@ -38,9 +38,13 @@ export function ReceiptDownloadButton({ data }: ReceiptDownloadButtonProps) {
 
   return (
     <div className="flex items-center gap-2">
-      <Button variant="outline" size="sm" onClick={printReceipt}>
+      <Button variant="outline" size="sm" onClick={() => printReceipt("A5")}>
         <Icons.Printer className="h-4 w-4 mr-2" />
-        Cetak
+        Cetak A5
+      </Button>
+      <Button variant="outline" size="sm" onClick={() => printReceipt("A4")}>
+        <Icons.Printer className="h-4 w-4 mr-2" />
+        Cetak A4
       </Button>
       <Button variant="default" size="sm" onClick={handleDownload} disabled={isDownloading}>
         {isDownloading ? (
