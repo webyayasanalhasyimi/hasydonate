@@ -22,9 +22,9 @@ export function PrintReceiptFooter({ data }: Readonly<{ data: ReceiptData }>) {
             <img
               src={data.qrCodeDataUrl}
               alt="QR Code"
-              className="h-8 w-8 object-contain"
+              className="h-16 w-16 object-contain"
             />
-            <div className="text-[7px] leading-tight text-muted-foreground">
+            <div className="text-[8px] leading-tight text-muted-foreground">
               Scan untuk<br />Lihat Kwitansi
             </div>
           </div>
